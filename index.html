@@ -1,689 +1,404 @@
+<!-- ... existing code ... -->
 <!DOCTYPE html>
 <html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mulher de Fé | Palavra de Deus, Devocionais e Livros</title>
+    <title>Mulher de Fé | Espaço de Inspiração e Edificação</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome CDN for elegant iconography -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Lora (Serif elegante) & Inter (Sans-serif moderno) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        offwhite: '#F8F5EF', // Fundo principal
-                        areia: '#E8DFD1',    // Caixas e áreas de destaque
-                        oliva: '#5C6F52',    // Títulos e elementos gráficos
-                        salvia: '#A8B49A',   // Linhas e detalhes suaves
-                        cafe: '#5A4636',     // Corpo do texto
-                        dourado: '#B79B6C',  // Destaques e botões secundários
-                        'dourado-hover': '#A38758',
-                        'oliva-dark': '#485840',
+                        oliva: '#5C6F52',
+                        'oliva-dark': '#485741',
+                        salvia: '#A3B19B',
+                        cafe: '#3A3930',
+                        offwhite: '#F8F5EF',
+                        dourado: '#C5A880'
                     },
                     fontFamily: {
-                        serif: ['Lora', 'serif'],
                         sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
                     }
                 }
             }
         }
     </script>
-    
-    <!-- Custom Styles for refined elements -->
-    <style>
-        body {
-            background-color: #F8F5EF;
-            color: #5A4636;
-            font-family: 'Inter', sans-serif;
-        }
-        h1, h2, h3, h4, h5, .font-heading {
-            font-family: 'Lora', serif;
-        }
-        .bg-pattern {
-            background-image: radial-gradient(#A8B49A 0.75px, transparent 0.75px);
-            background-size: 24px 24px;
-            opacity: 0.25;
-        }
-        .glass-card {
-            background: rgba(232, 223, 209, 0.65);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(168, 180, 154, 0.4);
-        }
-        .shadow-soft {
-            box-shadow: 0 10px 30px -5px rgba(90, 70, 54, 0.08);
-        }
-        .shadow-golden {
-            box-shadow: 0 8px 25px -3px rgba(183, 155, 108, 0.25);
-        }
-    </style>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-dourado selection:text-white">
+<body class="bg-offwhite text-cafe font-sans antialiased selection:bg-salvia/30 selection:text-cafe">
 
-    <!-- Top Announcement Bar -->
-    <div class="bg-oliva text-offwhite text-xs md:text-sm text-center py-2 px-4 font-medium tracking-wide flex items-center justify-center gap-2">
-        <i class="fa-solid fa-book-open text-dourado"></i>
-        <span>Novo Devocional Gratuito de Mês Disponível: <strong>"Renovadas na Palavra"</strong></span>
-        <button onclick="openModal('devocional-modal')" class="underline ml-2 hover:text-dourado transition-colors">Baixar Agora</button>
+    <!-- Top Notice Bar -->
+    <div class="bg-oliva text-offwhite text-xs sm:text-sm py-2 px-4 text-center font-medium relative z-50">
+        <i class="fa-solid fa-sparkles mr-2 text-dourado"></i> 
+        <span id="topo-aviso">Novo Devocional Gratuito de Mês Disponível: "Renovadas na Palavra"</span>
     </div>
 
-    <!-- Header Navigation -->
-    <header class="sticky top-0 z-40 bg-offwhite/90 backdrop-blur-md border-b border-salvia/30 transition-all duration-300">
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-offwhite/90 backdrop-blur-md border-b border-salvia/30 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            
-            <!-- Logo with Olive Tree Icon -->
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="w-11 h-11 rounded-full bg-areia flex items-center justify-center text-oliva group-hover:bg-oliva group-hover:text-offwhite transition-all duration-300 border border-salvia/40 shadow-sm">
-                    <!-- Olive Tree / Olive Branch SVG Icon -->
-                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                        <path d="M12,2C11.5,3.5 10.2,5 8.5,5.8C7.5,6.2 6.4,6.4 5.2,6.2C5.1,7.8 5.6,9.3 6.6,10.5C7.8,11.9 9.6,12.7 11.5,12.8C10.8,13.8 9.7,14.6 8.5,15C7.2,15.4 5.8,15.3 4.5,14.7C4.1,16.2 4.4,17.8 5.3,19C6.4,20.4 8.2,21.2 10,21.2C12.5,21.2 14.8,19.8 15.8,17.5C16.8,15.2 16.4,12.5 14.8,10.6C15.8,9.6 17.1,9 18.5,9C19.2,9 20,9.2 20.7,9.5C21.1,8 20.8,6.4 19.9,5.2C18.8,3.8 17,3 15.2,3C14.1,3 13,3.3 12,3.8V2M12,5.2C12.7,4.7 13.5,4.4 14.4,4.4C15.7,4.4 17,5 17.8,6C18.3,6.7 18.5,7.6 18.3,8.4C17.4,8.1 16.5,8 15.6,8.2C13.8,8.6 12.4,9.9 11.7,11.5C10.3,11.4 8.9,10.7 8,9.6C7.2,8.7 6.8,7.5 7,6.3C8,6.4 9,6.2 9.9,5.8C10.8,5.3 11.5,4.6 12,3.8V5.2Z"/>
-                    </svg>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-oliva text-offwhite flex items-center justify-center font-serif font-bold text-xl shadow-sm">
+                    M
                 </div>
-                <div>
-                    <span class="font-heading font-semibold text-xl tracking-tight text-oliva block leading-none">MULHER DE FÉ</span>
-                    <span class="text-[10px] tracking-widest text-cafe/70 uppercase font-sans">Ministério & Devocionais</span>
-                </div>
-            </a>
+                <span class="font-serif font-bold text-xl sm:text-2xl tracking-tight text-cafe">Mulher de Fé</span>
+            </div>
 
-            <!-- Desktop Menu -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
-                <a href="#livros" class="text-cafe hover:text-oliva transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-dourado hover:after:w-full after:transition-all">Livros</a>
-                <a href="#devocionais" class="text-cafe hover:text-oliva transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-dourado hover:after:w-full after:transition-all">Devocionais</a>
-                <a href="#mensagens" class="text-cafe hover:text-oliva transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-dourado hover:after:w-full after:transition-all">Mensagens</a>
-                <a href="#sobre" class="text-cafe hover:text-oliva transition-colors py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-dourado hover:after:w-full after:transition-all">Sobre</a>
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-cafe/80">
+                <a href="#devocionais" class="hover:text-oliva transition-colors">Devocionais</a>
+                <a href="#livros" class="hover:text-oliva transition-colors">Livros</a>
+                <a href="#midias" class="hover:text-oliva transition-colors">Mensagens</a>
+                <a href="#sobre" class="hover:text-oliva transition-colors">Sobre</a>
             </nav>
 
-            <!-- Main CTA Button -->
-            <div class="hidden sm:flex items-center gap-4">
-                <button onclick="openModal('devocional-modal')" class="bg-dourado hover:bg-dourado-hover text-white px-5 py-2.5 rounded-full text-sm font-medium shadow-golden hover:shadow-lg transition-all duration-300 flex items-center gap-2 transform hover:-translate-y-0.5">
-                    <i class="fa-solid fa-download text-xs"></i>
-                    <span>Baixar Devocional</span>
+            <div class="hidden md:flex items-center gap-4">
+                <button onclick="openModal('devocional-modal')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm hover:shadow flex items-center gap-2">
+                    <i class="fa-solid fa-download text-xs"></i> Baixar Devocional
                 </button>
             </div>
 
-            <!-- Mobile Menu Toggle Button -->
-            <button id="mobile-menu-btn" class="md:hidden text-oliva p-2 rounded-lg hover:bg-areia/50 transition-colors">
-                <i class="fa-solid fa-bars text-xl"></i>
+            <!-- Mobile Menu Button -->
+            <button onclick="toggleMobileMenu()" class="md:hidden text-cafe text-xl p-2 focus:outline-none">
+                <i class="fa-solid fa-bars" id="mobile-menu-icon"></i>
             </button>
         </div>
 
-        <!-- Mobile Menu Drawer -->
+        <!-- Mobile Menu Dropdown -->
         <div id="mobile-menu" class="hidden md:hidden bg-offwhite border-b border-salvia/30 px-4 pt-2 pb-6 space-y-3">
-            <a href="#livros" class="block px-3 py-2 rounded-md text-base font-medium text-cafe hover:bg-areia">Livros</a>
-            <a href="#devocionais" class="block px-3 py-2 rounded-md text-base font-medium text-cafe hover:bg-areia">Devocionais</a>
-            <a href="#mensagens" class="block px-3 py-2 rounded-md text-base font-medium text-cafe hover:bg-areia">Mensagens</a>
-            <a href="#sobre" class="block px-3 py-2 rounded-md text-base font-medium text-cafe hover:bg-areia">Sobre</a>
-            <button onclick="openModal('devocional-modal')" class="w-full mt-2 bg-dourado text-white px-5 py-3 rounded-full text-center font-medium shadow-md flex items-center justify-center gap-2">
-                <i class="fa-solid fa-download text-xs"></i>
-                <span>Baixar Devocional Gratuito</span>
+            <a href="#devocionais" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Devocionais</a>
+            <a href="#livros" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Livros</a>
+            <a href="#midias" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Mensagens</a>
+            <a href="#sobre" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Sobre</a>
+            <button onclick="openModal('devocional-modal'); toggleMobileMenu();" class="w-full bg-oliva text-offwhite py-3 rounded-lg text-sm font-medium mt-2 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-download"></i> Baixar Devocional
             </button>
         </div>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section class="relative py-16 lg:py-24 overflow-hidden">
-            <div class="absolute inset-0 bg-pattern"></div>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                    
-                    <!-- Text Content -->
-                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
-                        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-areia/80 border border-salvia/50 text-oliva text-xs md:text-sm font-medium">
-                            <i class="fa-solid fa-leaf text-dourado"></i>
-                            <span>Um refúgio para o seu coração</span>
-                        </div>
-                        
-                        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-heading font-semibold text-oliva leading-tight">
-                            Mulher de Fé é o lugar onde você encontra a <span class="text-dourado italic">resposta que precisa</span> por meio da Palavra de Deus.
-                        </h1>
-                        
-                        <p class="text-base sm:text-lg text-cafe/90 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                            Um espaço pensado carinhosamente para fortalecer sua fé, renovar suas forças no cotidiano e aprofundar seu relacionamento com Deus através de estudos, mensagens e devocionais bíblicos.
+    <!-- Hero Section -->
+    <section class="relative py-16 sm:py-24 overflow-hidden bg-gradient-to-b from-salvia/15 to-offwhite">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-salvia/20 text-oliva-dark text-xs font-semibold tracking-wide uppercase">
+                    <i class="fa-solid fa-book-open"></i> Edificação Diária
+                </span>
+                <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold text-cafe leading-tight">
+                    Caminhando com graça, propósito e <span class="text-oliva italic">fé inabalável</span>.
+                </h1>
+                <p class="text-base sm:text-lg text-cafe/80 max-w-xl mx-auto lg:mx-0">
+                    Um refúgio acolhedor para mulheres que buscam nutrir a alma através da Palavra, reflexões profundas e comunhão genuína.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
+                    <button onclick="openModal('devocional-modal')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-8 py-3.5 rounded-full font-medium shadow-md transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Baixar Devocional Gratuito
+                    </button>
+                    <a href="#devocionais" class="border border-oliva/40 hover:border-oliva text-cafe px-8 py-3.5 rounded-full font-medium transition-all flex items-center justify-center gap-2">
+                        Explorar Conteúdos
+                    </a>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="relative w-full max-w-md bg-white p-6 rounded-2xl shadow-xl border border-salvia/30">
+                    <div class="absolute -top-3 -right-3 bg-dourado text-offwhite text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                        Versículo do Dia
+                    </div>
+                    <div class="space-y-4 pt-2">
+                        <i class="fa-solid fa-quote-left text-3xl text-salvia/60"></i>
+                        <p id="versiculo-texto" class="font-serif text-lg italic text-cafe leading-relaxed">
+                            "A mulher que teme ao Senhor, essa será louvada..."
                         </p>
-                        
-                        <!-- CTA Buttons -->
-                        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-                            <button onclick="openModal('devocional-modal')" class="w-full sm:w-auto bg-dourado hover:bg-dourado-hover text-white px-8 py-4 rounded-full font-medium text-base shadow-golden transition-all duration-300 flex items-center justify-center gap-3 transform hover:-translate-y-1">
-                                <i class="fa-solid fa-file-pdf text-lg"></i>
-                                <span>Baixar Devocional Gratuito</span>
-                            </button>
-                            
-                            <a href="#devocionais" class="w-full sm:w-auto bg-areia hover:bg-areia/80 text-oliva border border-salvia/50 px-7 py-4 rounded-full font-medium text-base transition-all duration-300 flex items-center justify-center gap-2">
-                                <span>Explorar Conteúdos</span>
-                                <i class="fa-solid fa-arrow-right text-xs"></i>
-                            </a>
-                        </div>
-
-                        <!-- Trust Badge -->
-                        <div class="pt-6 flex items-center justify-center lg:justify-start gap-6 text-xs text-cafe/80 border-t border-salvia/30 mt-6">
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-check text-oliva"></i>
-                                <span>+10.000 Mulheres Impactadas</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i class="fa-solid fa-check text-oliva"></i>
-                                <span>Conteúdo 100% Bíblico</span>
-                            </div>
-                        </div>
+                        <p id="versiculo-ref" class="text-xs font-semibold text-oliva tracking-wider uppercase pt-2 border-t border-salvia/20">
+                            Provérbios 31:30-31
+                        </p>
                     </div>
-
-                    <!-- Visual Card / Devotional Mockup -->
-                    <div class="lg:col-span-5 flex justify-center">
-                        <div class="relative w-full max-w-md">
-                            <!-- Background Frame -->
-                            <div class="absolute -inset-2 bg-gradient-to-tr from-salvia to-dourado rounded-2xl blur-lg opacity-30"></div>
-                            
-                            <div class="relative bg-areia rounded-2xl p-6 border border-salvia/50 shadow-soft">
-                                <div class="bg-offwhite rounded-xl p-6 border border-salvia/30 space-y-4">
-                                    <div class="flex items-center justify-between border-b border-salvia/20 pb-3">
-                                        <span class="text-xs font-semibold uppercase tracking-wider text-dourado">Devocional do Dia</span>
-                                        <span class="text-xs text-cafe/60"><i class="fa-regular fa-calendar mr-1"></i>Hoje</span>
-                                    </div>
-                                    <h3 class="font-heading text-xl text-oliva font-semibold">Permanecendo Inabalável na Tempestade</h3>
-                                    <p class="text-sm text-cafe/80 italic font-serif bg-areia/30 p-3 rounded-lg border-l-2 border-dourado">
-                                        "O Senhor é a minha força e o meu escudo; nele o meu coração confia, e dele recebo ajuda." — Salmos 28:7
-                                    </p>
-                                    <p class="text-xs text-cafe/90 leading-relaxed">
-                                        Nos momentos em que as incertezas tentam roubar sua paz, lembre-se de que a sua âncora está firmada no amor imutável do Pai...
-                                    </p>
-                                    <div class="pt-2 flex items-center justify-between">
-                                        <button onclick="readDevotional('Permanecendo Inabalável na Tempestade')" class="text-xs font-semibold text-oliva hover:text-dourado transition-colors flex items-center gap-1">
-                                            Ler Devocional Completo <i class="fa-solid fa-chevron-right text-[10px]"></i>
-                                        </button>
-                                        <button onclick="openModal('devocional-modal')" title="Baixar PDF" class="text-dourado hover:text-oliva p-2 rounded-full hover:bg-areia transition-colors">
-                                            <i class="fa-solid fa-download"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Daily Verse Banner -->
-        <section class="bg-oliva text-offwhite py-12 px-4 relative">
-            <div class="max-w-4xl mx-auto text-center space-y-4">
-                <i class="fa-solid fa-quote-left text-3xl text-dourado/60"></i>
-                <p class="font-heading text-xl sm:text-2xl md:text-3xl italic leading-relaxed text-offwhite">
-                    "A mulher que teme ao Senhor, essa será louvada. Dai-lhe do fruto das suas mãos, e louvem-na nas portas as suas obras."
-                </p>
-                <div class="text-dourado font-medium tracking-wide text-sm">Provérbios 31:30-31</div>
-            </div>
-        </section>
-
-        <!-- Devocionais Section -->
-        <section id="devocionais" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-                <div>
-                    <div class="text-dourado text-sm font-semibold uppercase tracking-wider mb-2">Espaço de Oração e Meditação</div>
-                    <h2 class="text-3xl md:text-4xl font-heading font-semibold text-oliva">Devocionais em Destaque</h2>
-                </div>
-                <p class="text-sm text-cafe/80 max-w-md">
-                    Pequenas doses diárias da Palavra para nutrir sua alma, trazer clareza às decisões e renovar a esperança.
-                </p>
+    <!-- Devocionais Section -->
+    <section id="devocionais" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-cafe">Devocionais em Destaque</h2>
+                <p class="text-cafe/70 text-sm sm:text-base">Reflexões guiadas para fortalecer seu caminhar com Deus a cada amanhecer.</p>
             </div>
 
-            <!-- Devotional Cards Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
                 <!-- Card 1 -->
-                <div class="bg-areia/60 rounded-2xl p-6 border border-salvia/40 shadow-soft flex flex-col justify-between hover:border-dourado/60 transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-3 py-1 bg-offwhite text-oliva text-xs rounded-full font-medium border border-salvia/30">Identidade & Propósito</span>
-                            <span class="text-xs text-cafe/60"><i class="fa-regular fa-clock mr-1"></i> 5 min de leitura</span>
+                <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 bg-salvia/20 flex items-center justify-center relative">
+                            <span class="absolute top-3 left-3 bg-oliva text-offwhite text-xs px-2.5 py-1 rounded-full font-medium">Novo</span>
+                            <i class="fa-solid fa-seedling text-4xl text-oliva/60"></i>
                         </div>
-                        <h3 class="font-heading text-xl font-semibold text-oliva">Quem Você É em Cristo</h3>
-                        <p class="text-sm text-cafe/80 line-clamp-3">
-                            Antes do mundo rotular você, Deus já havia escrito sua história. Descubra como viver livre da necessidade de aprovação humana.
-                        </p>
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center gap-2 text-xs text-oliva font-semibold">
+                                <i class="fa-regular fa-clock"></i> 5 min de leitura
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-cafe">Renovadas na Palavra</h3>
+                            <p class="text-sm text-cafe/70 line-clamp-3">Descubra como renovar suas forças espirituais em meio às demandas diárias através da graça constante do Senhor.</p>
+                        </div>
                     </div>
-                    <div class="pt-6 mt-6 border-t border-salvia/30 flex items-center justify-between">
-                        <button onclick="readDevotional('Quem Você É em Cristo')" class="text-sm font-medium text-oliva hover:text-dourado transition-colors flex items-center gap-1">
-                            Ler Agora <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </button>
-                        <button onclick="openModal('devocional-modal')" class="text-xs bg-dourado hover:bg-dourado-hover text-white px-3 py-1.5 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-file-pdf"></i> PDF
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('devocional-modal')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
+                            Baixar PDF Completo
                         </button>
                     </div>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-areia/60 rounded-2xl p-6 border border-salvia/40 shadow-soft flex flex-col justify-between hover:border-dourado/60 transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-3 py-1 bg-offwhite text-oliva text-xs rounded-full font-medium border border-salvia/30">Paz na Ansiedade</span>
-                            <span class="text-xs text-cafe/60"><i class="fa-regular fa-clock mr-1"></i> 7 min de leitura</span>
+                <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="h-48 bg-salvia/20 flex items-center justify-center relative">
+                            <span class="absolute top-3 left-3 bg-dourado text-offwhite text-xs px-2.5 py-1 rounded-full font-medium">Mais Baixado</span>
+                            <i class="fa-solid fa-heart-pulse text-4xl text-oliva/60"></i>
                         </div>
-                        <h3 class="font-heading text-xl font-semibold text-oliva">Entregando o Amanhã</h3>
-                        <p class="text-sm text-cafe/80 line-clamp-3">
-                            A ansiedade tenta antecipar dores que Deus não planejou para o seu hoje. Aprenda o descanso da oração com ações de graças.
-                        </p>
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center gap-2 text-xs text-oliva font-semibold">
+                                <i class="fa-regular fa-clock"></i> 7 min de leitura
+                            </div>
+                            <h3 class="font-serif text-xl font-bold text-cafe">A Paz que Excede Todo Entendimento</h3>
+                            <p class="text-sm text-cafe/70 line-clamp-3">Um guia prático e devocional sobre como combater a ansiedade através da oração e entrega total no altar de Deus.</p>
+                        </div>
                     </div>
-                    <div class="pt-6 mt-6 border-t border-salvia/30 flex items-center justify-between">
-                        <button onclick="readDevotional('Entregando o Amanhã')" class="text-sm font-medium text-oliva hover:text-dourado transition-colors flex items-center gap-1">
-                            Ler Agora <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </button>
-                        <button onclick="openModal('devocional-modal')" class="text-xs bg-dourado hover:bg-dourado-hover text-white px-3 py-1.5 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-file-pdf"></i> PDF
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('devocional-modal')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
+                            Baixar PDF Completo
                         </button>
                     </div>
                 </div>
 
                 <!-- Card 3 -->
-                <div class="bg-areia/60 rounded-2xl p-6 border border-salvia/40 shadow-soft flex flex-col justify-between hover:border-dourado/60 transition-all duration-300">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="px-3 py-1 bg-offwhite text-oliva text-xs rounded-full font-medium border border-salvia/30">Família & Lar</span>
-                            <span class="text-xs text-cafe/60"><i class="fa-regular fa-clock mr-1"></i> 4 min de leitura</span>
-                        </div>
-                        <h3 class="font-heading text-xl font-semibold text-oliva">O Poder da Oração Secreta</h3>
-                        <p class="text-sm text-cafe/80 line-clamp-3">
-                            Suas palavras no secreto da sua oração sustentam estruturas visíveis na vida daqueles que você ama. O altar da sua casa começa em você.
-                        </p>
-                    </div>
-                    <div class="pt-6 mt-6 border-t border-salvia/30 flex items-center justify-between">
-                        <button onclick="readDevotional('O Poder da Oração Secreta')" class="text-sm font-medium text-oliva hover:text-dourado transition-colors flex items-center gap-1">
-                            Ler Agora <i class="fa-solid fa-arrow-right text-xs"></i>
-                        </button>
-                        <button onclick="openModal('devocional-modal')" class="text-xs bg-dourado hover:bg-dourado-hover text-white px-3 py-1.5 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-file-pdf"></i> PDF
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Download Callout Banner -->
-            <div class="mt-12 bg-gradient-to-r from-areia via-offwhite to-areia p-8 rounded-2xl border border-dourado/40 shadow-soft flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="flex items-center gap-4">
-                    <div class="w-14 h-14 rounded-full bg-dourado/20 text-dourado flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-book-bookmark text-2xl"></i>
-                    </div>
+                <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                     <div>
-                        <h4 class="font-heading text-xl text-oliva font-semibold">Coletânea Mensal de Devocionais</h4>
-                        <p class="text-sm text-cafe/80">Receba gratuitamente em PDF 30 dias de reflexões profundas para o seu momento a sós com Deus.</p>
-                    </div>
-                </div>
-                <button onclick="openModal('devocional-modal')" class="shrink-0 bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-3 rounded-full text-sm font-medium shadow-md transition-all flex items-center gap-2">
-                    <i class="fa-solid fa-download"></i>
-                    <span>Baixar E-book Gratuito</span>
-                </button>
-            </div>
-        </section>
-
-        <!-- Livros Section -->
-        <section id="livros" class="py-16 md:py-24 bg-areia/40 border-y border-salvia/30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                
-                <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
-                    <span class="text-dourado text-sm font-semibold uppercase tracking-wider">Literatura Inspiradora</span>
-                    <h2 class="text-3xl md:text-4xl font-heading font-semibold text-oliva">Livros Publicados</h2>
-                    <p class="text-cafe/80 text-sm md:text-base">
-                        Obras escritas para acompanhar suas jornadas de fé, cura emocional e amadurecimento espiritual.
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                    
-                    <!-- Book 1 -->
-                    <div class="bg-offwhite rounded-2xl p-6 md:p-8 border border-salvia/40 shadow-soft flex flex-col sm:flex-row gap-6 items-center">
-                        <!-- Book Cover Simulation -->
-                        <div class="w-44 h-64 shrink-0 bg-gradient-to-br from-oliva to-oliva-dark text-offwhite rounded-r-xl rounded-l-sm p-5 shadow-2xl flex flex-col justify-between border-l-4 border-dourado relative overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                            <div class="absolute -right-8 -bottom-8 w-28 h-28 bg-dourado/20 rounded-full blur-xl"></div>
-                            <div class="text-[10px] uppercase tracking-widest text-dourado">Livro Físico & Digital</div>
-                            <div class="space-y-2">
-                                <h4 class="font-heading text-lg font-bold leading-tight">Florescer no Deserto</h4>
-                                <p class="text-[11px] text-offwhite/80 italic">Como encontrar propósito nas estações difíceis da vida</p>
-                            </div>
-                            <div class="text-xs border-t border-offwhite/20 pt-2 flex items-center justify-between">
-                                <span>Mulher de Fé</span>
-                                <i class="fa-solid fa-leaf text-dourado"></i>
-                            </div>
+                        <div class="h-48 bg-salvia/20 flex items-center justify-center relative">
+                            <span class="absolute top-3 left-3 bg-oliva text-offwhite text-xs px-2.5 py-1 rounded-full font-medium">Essencial</span>
+                            <i class="fa-solid fa-hands-praying text-4xl text-oliva/60"></i>
                         </div>
-
-                        <!-- Book Info -->
-                        <div class="space-y-4 text-center sm:text-left">
-                            <span class="text-xs bg-dourado/15 text-dourado font-semibold px-2.5 py-1 rounded-md">Bestseller</span>
-                            <h3 class="font-heading text-2xl font-semibold text-oliva">Florescer no Deserto</h3>
-                            <p class="text-sm text-cafe/80 leading-relaxed">
-                                Um guia prático e acolhedor para mulheres que sentem que estão atravessando tempos de aridez. Deus renova suas forças mesmo nos lugares mais improváveis.
-                            </p>
-                            <div class="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
-                                <button onclick="buyBookModal('Florescer no Deserto')" class="bg-dourado hover:bg-dourado-hover text-white px-5 py-2.5 rounded-full text-sm font-medium shadow-sm transition-all flex items-center gap-2">
-                                    <i class="fa-solid fa-cart-shopping text-xs"></i>
-                                    <span>Adquirir Exemplar</span>
-                                </button>
-                                <button onclick="previewSample('Florescer no Deserto')" class="bg-areia text-oliva border border-salvia/50 px-4 py-2.5 rounded-full text-sm font-medium hover:bg-areia/70 transition-all">
-                                    Degustar Capítulo
-                                </button>
+                        <div class="p-6 space-y-3">
+                            <div class="flex items-center gap-2 text-xs text-oliva font-semibold">
+                                <i class="fa-regular fa-clock"></i> 6 min de leitura
                             </div>
+                            <h3 class="font-serif text-xl font-bold text-cafe">Mães que Oram por Seus Filhos</h3>
+                            <p class="text-sm text-cafe/70 line-clamp-3">O poder transformador da intercessão materna na vida e no futuro da próxima geração.</p>
                         </div>
                     </div>
-
-                    <!-- Book 2 -->
-                    <div class="bg-offwhite rounded-2xl p-6 md:p-8 border border-salvia/40 shadow-soft flex flex-col sm:flex-row gap-6 items-center">
-                        <!-- Book Cover Simulation -->
-                        <div class="w-44 h-64 shrink-0 bg-gradient-to-br from-cafe to-cafe/90 text-offwhite rounded-r-xl rounded-l-sm p-5 shadow-2xl flex flex-col justify-between border-l-4 border-dourado relative overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                            <div class="absolute -right-8 -top-8 w-28 h-28 bg-dourado/20 rounded-full blur-xl"></div>
-                            <div class="text-[10px] uppercase tracking-widest text-dourado">Edição Especial</div>
-                            <div class="space-y-2">
-                                <h4 class="font-heading text-lg font-bold leading-tight">Sabedoria Diária</h4>
-                                <p class="text-[11px] text-offwhite/80 italic">365 dias de renovação mental e espiritual</p>
-                            </div>
-                            <div class="text-xs border-t border-offwhite/20 pt-2 flex items-center justify-between">
-                                <span>Mulher de Fé</span>
-                                <i class="fa-solid fa-leaf text-dourado"></i>
-                            </div>
-                        </div>
-
-                        <!-- Book Info -->
-                        <div class="space-y-4 text-center sm:text-left">
-                            <span class="text-xs bg-salvia/30 text-oliva font-semibold px-2.5 py-1 rounded-md">Lançamento</span>
-                            <h3 class="font-heading text-2xl font-semibold text-oliva">Sabedoria Diária</h3>
-                            <p class="text-sm text-cafe/80 leading-relaxed">
-                                Um devocional anual completo com passagens selecionadas, orações direcionadas e espaço para anotações pessoais do seu tempo com o Pai.
-                            </p>
-                            <div class="pt-2 flex flex-wrap items-center justify-center sm:justify-start gap-3">
-                                <button onclick="buyBookModal('Sabedoria Diária')" class="bg-dourado hover:bg-dourado-hover text-white px-5 py-2.5 rounded-full text-sm font-medium shadow-sm transition-all flex items-center gap-2">
-                                    <i class="fa-solid fa-cart-shopping text-xs"></i>
-                                    <span>Adquirir Exemplar</span>
-                                </button>
-                                <button onclick="previewSample('Sabedoria Diária')" class="bg-areia text-oliva border border-salvia/50 px-4 py-2.5 rounded-full text-sm font-medium hover:bg-areia/70 transition-all">
-                                    Degustar Capítulo
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Mensagens Section -->
-        <section id="mensagens" class="py-16 md:py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-                <div>
-                    <div class="text-dourado text-sm font-semibold uppercase tracking-wider mb-2">Palavra Falada & Ministrações</div>
-                    <h2 class="text-3xl md:text-4xl font-heading font-semibold text-oliva">Mensagens em Áudio e Vídeo</h2>
-                </div>
-                <p class="text-sm text-cafe/80 max-w-md">
-                    Assista ou ouça estudos e ministrações onde você estiver — no caminho do trabalho, em casa ou em seus momentos de quietude.
-                </p>
-            </div>
-
-            <!-- Messages Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                
-                <!-- Video Message 1 -->
-                <div class="bg-areia/50 rounded-2xl overflow-hidden border border-salvia/40 shadow-soft group hover:shadow-lg transition-all">
-                    <div class="relative bg-oliva h-48 flex items-center justify-center overflow-hidden">
-                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                        <i class="fa-solid fa-circle-play text-5xl text-offwhite group-hover:scale-110 text-dourado transition-transform duration-300 z-10 cursor-pointer" onclick="playMedia('Quando a Resposta Demora', 'video')"></i>
-                        <span class="absolute bottom-3 right-3 bg-black/60 text-white text-[11px] px-2.5 py-1 rounded-md backdrop-blur-sm">28 min</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <span class="text-xs text-dourado font-semibold uppercase">Estudo Bíblico</span>
-                        <h3 class="font-heading text-lg font-semibold text-oliva group-hover:text-dourado transition-colors">Quando a Resposta Demora: Guardando o Coração na Espera</h3>
-                        <p class="text-xs text-cafe/80 line-clamp-2">
-                            Uma reflexão sobre a fidelidade de Deus nos silêncios e como fortalecer a paciência cristã.
-                        </p>
-                        <button onclick="playMedia('Quando a Resposta Demora', 'video')" class="pt-2 text-xs font-semibold text-oliva hover:text-dourado flex items-center gap-1">
-                            <i class="fa-solid fa-play text-[10px]"></i> Assistir Ministração
+                    <div class="p-6 pt-0">
+                        <button onclick="openModal('devocional-modal')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
+                            Baixar PDF Completo
                         </button>
                     </div>
                 </div>
-
-                <!-- Audio Message 2 -->
-                <div class="bg-areia/50 rounded-2xl overflow-hidden border border-salvia/40 shadow-soft group hover:shadow-lg transition-all">
-                    <div class="relative bg-cafe h-48 flex items-center justify-center overflow-hidden">
-                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                        <i class="fa-solid fa-circle-play text-5xl text-offwhite group-hover:scale-110 text-dourado transition-transform duration-300 z-10 cursor-pointer" onclick="playMedia('A Mente Restaurada', 'audio')"></i>
-                        <span class="absolute bottom-3 right-3 bg-black/60 text-white text-[11px] px-2.5 py-1 rounded-md backdrop-blur-sm">18 min</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <span class="text-xs text-dourado font-semibold uppercase">Podcast / Áudio</span>
-                        <h3 class="font-heading text-lg font-semibold text-oliva group-hover:text-dourado transition-colors">A Mente Restaurada: Vencendo Pensamentos de Derrota</h3>
-                        <p class="text-xs text-cafe/80 line-clamp-2">
-                            Como alinhar seus pensamentos diários à luz da verdade das Escrituras Sagradas.
-                        </p>
-                        <button onclick="playMedia('A Mente Restaurada', 'audio')" class="pt-2 text-xs font-semibold text-oliva hover:text-dourado flex items-center gap-1">
-                            <i class="fa-solid fa-headphones text-[10px]"></i> Ouvir PodCast
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Video Message 3 -->
-                <div class="bg-areia/50 rounded-2xl overflow-hidden border border-salvia/40 shadow-soft group hover:shadow-lg transition-all">
-                    <div class="relative bg-oliva-dark h-48 flex items-center justify-center overflow-hidden">
-                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
-                        <i class="fa-solid fa-circle-play text-5xl text-offwhite group-hover:scale-110 text-dourado transition-transform duration-300 z-10 cursor-pointer" onclick="playMedia('Servindo com Alegria', 'video')"></i>
-                        <span class="absolute bottom-3 right-3 bg-black/60 text-white text-[11px] px-2.5 py-1 rounded-md backdrop-blur-sm">35 min</span>
-                    </div>
-                    <div class="p-6 space-y-3">
-                        <span class="text-xs text-dourado font-semibold uppercase">Pregação Especial</span>
-                        <h3 class="font-heading text-lg font-semibold text-oliva group-hover:text-dourado transition-colors">Servindo com Alegria: O Impacto da Mulher no Seu Lar</h3>
-                        <p class="text-xs text-cafe/80 line-clamp-2">
-                            Entenda a nobreza da sua vocação cotidiana e como pequenas ações transformam ambientes.
-                        </p>
-                        <button onclick="playMedia('Servindo com Alegria', 'video')" class="pt-2 text-xs font-semibold text-oliva hover:text-dourado flex items-center gap-1">
-                            <i class="fa-solid fa-play text-[10px]"></i> Assistir Ministração
-                        </button>
-                    </div>
-                </div>
-
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Sobre & Instagram Section -->
-        <section id="sobre" class="py-16 md:py-24 bg-areia/30 border-t border-salvia/30">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-                    
-                    <!-- Bio / Mission Text -->
-                    <div class="lg:col-span-6 space-y-6">
-                        <div class="w-12 h-12 rounded-full bg-oliva text-offwhite flex items-center justify-center">
-                            <svg class="w-7 h-7 fill-current" viewBox="0 0 24 24">
-                                <path d="M12,2C11.5,3.5 10.2,5 8.5,5.8C7.5,6.2 6.4,6.4 5.2,6.2C5.1,7.8 5.6,9.3 6.6,10.5C7.8,11.9 9.6,12.7 11.5,12.8C10.8,13.8 9.7,14.6 8.5,15C7.2,15.4 5.8,15.3 4.5,14.7C4.1,16.2 4.4,17.8 5.3,19C6.4,20.4 8.2,21.2 10,21.2C12.5,21.2 14.8,19.8 15.8,17.5C16.8,15.2 16.4,12.5 14.8,10.6C15.8,9.6 17.1,9 18.5,9C19.2,9 20,9.2 20.7,9.5C21.1,8 20.8,6.4 19.9,5.2C18.8,3.8 17,3 15.2,3C14.1,3 13,3.3 12,3.8V2M12,5.2C12.7,4.7 13.5,4.4 14.4,4.4C15.7,4.4 17,5 17.8,6C18.3,6.7 18.5,7.6 18.3,8.4C17.4,8.1 16.5,8 15.6,8.2C13.8,8.6 12.4,9.9 11.7,11.5C10.3,11.4 8.9,10.7 8,9.6C7.2,8.7 6.8,7.5 7,6.3C8,6.4 9,6.2 9.9,5.8C10.8,5.3 11.5,4.6 12,3.8V5.2Z"/>
-                            </svg>
-                        </div>
-                        <h2 class="text-3xl md:text-4xl font-heading font-semibold text-oliva">A Propósito da Mulher de Fé</h2>
-                        <p class="text-cafe/90 leading-relaxed text-base">
-                            O projeto <strong>Mulher de Fé</strong> nasceu com uma missão clara: criar um refúgio digital acolhedor onde mulheres de todas as idades pudessem encontrar conteúdos centralizados na Palavra de Deus.
-                        </p>
-                        <p class="text-cafe/80 leading-relaxed text-sm">
-                            Sabemos como o dia a dia pode ser corrido e disperso. Por isso, reunimos aqui nossos livros, devocionais em PDF e mensagens em áudio e vídeo, para que você tenha sempre ao alcance da mão uma palavra de encorajamento e discernimento.
-                        </p>
+    <!-- Livros Section -->
+    <section id="livros" class="py-20 bg-offwhite border-t border-salvia/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-cafe">Livros Publicados</h2>
+                <p class="text-cafe/70 text-sm sm:text-base">Obras literárias escritas para edificar seu lar e aprofundar sua identidade cristã.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Book 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-salvia/30 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
+                    <div class="w-36 h-48 bg-oliva/10 rounded-lg flex items-center justify-center shrink-0 border border-salvia/30">
+                        <i class="fa-solid fa-book text-5xl text-oliva"></i>
+                    </div>
+                    <div class="space-y-3 text-center sm:text-left">
+                        <span class="text-xs font-semibold bg-dourado/20 text-cafe px-2.5 py-1 rounded-full">Bestseller</span>
+                        <h3 class="font-serif text-xl font-bold text-cafe">Essência de Mulher</h3>
+                        <p class="text-sm text-cafe/70">Reflexões profundas sobre o valor e a dignidade da mulher segundo o design original de Deus.</p>
                         <div class="pt-2">
-                            <a href="https://instagram.com" target="_blank" class="inline-flex items-center gap-3 bg-oliva hover:bg-oliva-dark text-white px-6 py-3 rounded-full text-sm font-medium transition-all shadow-sm">
-                                <i class="fa-brands fa-instagram text-lg"></i>
-                                <span>Acompanhe no Instagram @mulherdefe</span>
-                            </a>
+                            <button onclick="buyBookModal('Essência de Mulher')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm">
+                                Adquirir Exemplo / Livro
+                            </button>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Instagram Mockup Cards -->
-                    <div class="lg:col-span-6 bg-offwhite p-6 rounded-2xl border border-salvia/40 shadow-soft">
-                        <div class="flex items-center justify-between pb-4 border-b border-salvia/30 mb-6">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-areia border border-salvia/50 flex items-center justify-center text-oliva">
-                                    <i class="fa-brands fa-instagram text-xl"></i>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-sm text-oliva">@mulherdefe.oficial</h4>
-                                    <p class="text-[11px] text-cafe/70">Comunidade de Fé & Oração</p>
-                                </div>
-                            </div>
-                            <a href="https://instagram.com" target="_blank" class="text-xs text-dourado font-semibold hover:underline">Ver Perfil</a>
-                        </div>
-
-                        <!-- Instagram Simulated Grid -->
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="aspect-square bg-areia/80 rounded-xl p-3 flex flex-col justify-between hover:scale-105 transition-transform cursor-pointer border border-salvia/20">
-                                <span class="text-[9px] text-dourado uppercase font-bold">Versículo</span>
-                                <p class="text-[10px] italic text-cafe/90 line-clamp-4">"Guardei a tua palavra no meu coração..."</p>
-                                <div class="text-[9px] text-oliva flex items-center gap-1"><i class="fa-regular fa-heart"></i> 1.2k</div>
-                            </div>
-
-                            <div class="aspect-square bg-oliva/10 rounded-xl p-3 flex flex-col justify-between hover:scale-105 transition-transform cursor-pointer border border-salvia/20">
-                                <span class="text-[9px] text-oliva uppercase font-bold">Oração</span>
-                                <p class="text-[10px] italic text-cafe/90 line-clamp-4">Senhor, guarda a minha casa e o meu coração hoje...</p>
-                                <div class="text-[9px] text-oliva flex items-center gap-1"><i class="fa-regular fa-heart"></i> 2.4k</div>
-                            </div>
-
-                            <div class="aspect-square bg-areia/80 rounded-xl p-3 flex flex-col justify-between hover:scale-105 transition-transform cursor-pointer border border-salvia/20">
-                                <span class="text-[9px] text-dourado uppercase font-bold">Devocional</span>
-                                <p class="text-[10px] italic text-cafe/90 line-clamp-4">A verdadeira paz não depende das circunstâncias.</p>
-                                <div class="text-[9px] text-oliva flex items-center gap-1"><i class="fa-regular fa-heart"></i> 980</div>
-                            </div>
+                <!-- Book 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-salvia/30 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
+                    <div class="w-36 h-48 bg-oliva/10 rounded-lg flex items-center justify-center shrink-0 border border-salvia/30">
+                        <i class="fa-solid fa-book-bookmark text-5xl text-oliva"></i>
+                    </div>
+                    <div class="space-y-3 text-center sm:text-left">
+                        <span class="text-xs font-semibold bg-salvia/30 text-cafe px-2.5 py-1 rounded-full">Lançamento</span>
+                        <h3 class="font-serif text-xl font-bold text-cafe">Tratado de Paz no Lar</h3>
+                        <p class="text-sm text-cafe/70">Conselhos práticos baseados na sabedoria bíblica para harmonizar a convivência familiar.</p>
+                        <div class="pt-2">
+                            <button onclick="buyBookModal('Tratado de Paz no Lar')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm">
+                                Adquirir Exemplo / Livro
+                            </button>
                         </div>
                     </div>
-
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+
+    <!-- Mídias Section -->
+    <section id="midias" class="py-20 bg-white border-t border-salvia/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-cafe">Mensagens em Áudio e Vídeo</h2>
+                <p class="text-cafe/70 text-sm sm:text-base">Ouça ministrações inspiradoras que trazem direção e conforto para o coração.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="bg-offwhite p-6 rounded-xl border border-salvia/30 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-oliva text-offwhite flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-oliva font-semibold">Podcast • Episódio 14</span>
+                            <h4 class="font-serif font-bold text-cafe">A Força da Oração Silenciosa</h4>
+                        </div>
+                    </div>
+                    <button onclick="showNotification('Em Breve', 'Este áudio estará disponível para reprodução na próxima atualização.', 'info')" class="text-xs font-semibold text-oliva hover:underline shrink-0">
+                        Ouvir Agora
+                    </button>
+                </div>
+
+                <div class="bg-offwhite p-6 rounded-xl border border-salvia/30 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-oliva text-offwhite flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-play"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs text-oliva font-semibold">Mensagem • Vídeo</span>
+                            <h4 class="font-serif font-bold text-cafe">Construindo um Lar com Sabedoria</h4>
+                        </div>
+                    </div>
+                    <button onclick="showNotification('Em Breve', 'Este vídeo estará disponível para reprodução na próxima atualização.', 'info')" class="text-xs font-semibold text-oliva hover:underline shrink-0">
+                        Assistir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sobre Section -->
+    <section id="sobre" class="py-20 bg-salvia/10 border-t border-salvia/20">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            <div class="w-16 h-16 rounded-full bg-oliva text-offwhite flex items-center justify-center mx-auto text-2xl font-serif font-bold shadow-md">
+                M
+            </div>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-cafe">Sobre o Espaço Mulher de Fé</h2>
+            <p class="text-cafe/80 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+                Nossa missão é incentivar mulheres a cultivarem um relacionamento íntimo com Deus, encontrando apoio, edificação espiritual e ferramentas práticas para viverem o seu verdadeiro propósito.
+            </p>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-oliva text-offwhite text-center">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            <h2 class="font-serif text-3xl font-bold">Receba Inspirações Diárias</h2>
+            <p class="text-offwhite/80 text-sm sm:text-base">Inscreva-se com seu e-mail para receber devocionais exclusivos e avisos de novos materiais.</p>
+            <form onsubmit="handleSubscribe(event)" class="flex flex-col sm:flex-row max-w-md mx-auto gap-3">
+                <input type="email" id="newsletter-email" required placeholder="Seu melhor e-mail" 
+                       class="flex-grow px-5 py-3.5 rounded-full border border-salvia/50 bg-offwhite text-cafe focus:outline-none focus:ring-2 focus:ring-dourado/50 focus:border-dourado placeholder-cafe/40 transition-all">
+                <button type="submit" id="btn-subscribe" class="bg-dourado hover:bg-dourado/90 text-cafe px-8 py-3.5 rounded-full font-semibold shadow-md transition-all sm:w-auto">
+                    Inscrever
+                </button>
+            </form>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-oliva text-offwhite py-12 border-t border-salvia/40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-salvia/30">
-                
-                <!-- Col 1: Brand -->
-                <div class="space-y-3 md:col-span-2">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-full bg-dourado text-offwhite flex items-center justify-center">
-                            <i class="fa-solid fa-leaf text-xs"></i>
-                        </div>
-                        <span class="font-heading font-semibold text-xl tracking-tight text-offwhite">MULHER DE FÉ</span>
-                    </div>
-                    <p class="text-xs text-offwhite/80 max-w-sm leading-relaxed">
-                        Mulher de Fé é o lugar onde você encontra a resposta que precisa por meio da Palavra de Deus.
-                    </p>
+    <footer class="bg-cafe text-offwhite/70 py-12 text-xs sm:text-sm border-t border-salvia/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-oliva text-offwhite flex items-center justify-center font-serif font-bold text-base">
+                    M
                 </div>
-
-                <!-- Col 2: Navigation -->
-                <div>
-                    <h5 class="font-heading font-semibold text-sm text-dourado mb-3">Navegação</h5>
-                    <ul class="space-y-2 text-xs text-offwhite/80">
-                        <li><a href="#livros" class="hover:text-dourado transition-colors">Livros</a></li>
-                        <li><a href="#devocionais" class="hover:text-dourado transition-colors">Devocionais em PDF</a></li>
-                        <li><a href="#mensagens" class="hover:text-dourado transition-colors">Mensagens e Áudios</a></li>
-                        <li><a href="#sobre" class="hover:text-dourado transition-colors">Sobre o Ministério</a></li>
-                    </ul>
-                </div>
-
-                <!-- Col 3: Redes & Contato -->
-                <div>
-                    <h5 class="font-heading font-semibold text-sm text-dourado mb-3">Conecte-se</h5>
-                    <div class="flex items-center gap-3">
-                        <a href="https://instagram.com" target="_blank" class="w-9 h-9 rounded-full bg-offwhite/10 hover:bg-dourado text-offwhite flex items-center justify-center transition-colors">
-                            <i class="fa-brands fa-instagram text-sm"></i>
-                        </a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-offwhite/10 hover:bg-dourado text-offwhite flex items-center justify-center transition-colors">
-                            <i class="fa-brands fa-youtube text-sm"></i>
-                        </a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-offwhite/10 hover:bg-dourado text-offwhite flex items-center justify-center transition-colors">
-                            <i class="fa-solid fa-envelope text-sm"></i>
-                        </a>
-                    </div>
-                </div>
-
+                <span class="font-serif font-bold text-base text-offwhite">Mulher de Fé</span>
             </div>
-
-            <!-- Bottom Copyright -->
-            <div class="pt-6 text-center text-xs text-offwhite/60 flex flex-col sm:flex-row items-center justify-between gap-2">
-                <p>&copy; 2026 Mulher de Fé. Todos os direitos reservados.</p>
-                <p class="italic">"Lâmpada para os meus pés é tua palavra e luz, para o meu caminho."</p>
+            <p>© 2026 Mulher de Fé. Todos os direitos reservados.</p>
+            <div class="flex gap-6 text-offwhite">
+                <a href="#" class="hover:text-salvia transition-colors"><i class="fa-brands fa-instagram text-lg"></i></a>
+                <a href="#" class="hover:text-salvia transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+                <a href="#" class="hover:text-salvia transition-colors"><i class="fa-brands fa-spotify text-lg"></i></a>
             </div>
         </div>
     </footer>
 
-    <!-- Modal 1: Baixar Devocional (Ação Principal) -->
-    <div id="devocional-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-offwhite rounded-2xl max-w-md w-full p-6 sm:p-8 border border-salvia/40 shadow-2xl relative transform transition-all">
-            <!-- Close Button -->
-            <button onclick="closeModal('devocional-modal')" class="absolute top-4 right-4 text-cafe/60 hover:text-oliva p-2">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-
-            <!-- Modal Content -->
-            <div class="text-center space-y-4">
-                <div class="w-12 h-12 rounded-full bg-areia text-dourado mx-auto flex items-center justify-center">
-                    <i class="fa-solid fa-file-pdf text-2xl"></i>
-                </div>
-                
-                <h3 class="font-heading text-2xl font-semibold text-oliva">Baixe o Devocional Gratuito</h3>
-                <p class="text-xs text-cafe/80">
-                    Insira seu e-mail para receber o e-book em PDF <strong>"Renovadas na Palavra"</strong> com 30 devocionais exclusivos.
+    <!-- Devocional Modal -->
+    <div id="devocional-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-cafe/60 backdrop-blur-sm hidden p-4">
+        <div class="bg-offwhite w-full max-w-md rounded-2xl shadow-2xl border border-salvia/30 overflow-hidden transform transition-all">
+            <!-- Modal Header -->
+            <div class="bg-oliva text-offwhite px-6 py-4 flex items-center justify-between">
+                <h3 class="font-serif font-bold text-lg">Baixar Devocional Gratuito</h3>
+                <button onclick="closeModal('devocional-modal')" class="text-offwhite/80 hover:text-offwhite text-lg p-1">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div class="p-6 space-y-4">
+                <p class="text-xs sm:text-sm text-cafe text-center mb-4">
+                    Informe seus dados abaixo para receber o PDF diretamente no seu e-mail ou fazer o download agora mesmo.
                 </p>
-
-                <!-- Form -->
-                <form id="download-form" onsubmit="handleDownload(event)" class="space-y-4 pt-2 text-left">
+                <form onsubmit="handleDownload(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-semibold text-oliva mb-1">Seu Nome</label>
-                        <input type="text" required placeholder="Ex: Maria Silva" class="w-full px-4 py-3 rounded-xl bg-areia/40 border border-salvia/50 text-cafe text-sm focus:outline-none focus:border-dourado">
+                        <label class="block text-xs font-semibold text-cafe/70 mb-1">Seu Nome</label>
+                        <input type="text" id="lead-nome" required class="w-full px-4 py-2.5 rounded-lg border border-salvia/50 bg-white text-sm focus:outline-none focus:border-dourado focus:ring-1 focus:ring-dourado">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-oliva mb-1">Seu E-mail Principal</label>
-                        <input type="email" required placeholder="seuemail@exemplo.com" class="w-full px-4 py-3 rounded-xl bg-areia/40 border border-salvia/50 text-cafe text-sm focus:outline-none focus:border-dourado">
+                        <label class="block text-xs font-semibold text-cafe/70 mb-1">Seu E-mail</label>
+                        <input type="email" id="lead-email" required class="w-full px-4 py-2.5 rounded-lg border border-salvia/50 bg-white text-sm focus:outline-none focus:border-dourado focus:ring-1 focus:ring-dourado">
                     </div>
-                    <button type="submit" class="w-full bg-dourado hover:bg-dourado-hover text-white py-3.5 rounded-full text-sm font-semibold shadow-golden transition-all flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-download"></i>
-                        <span>Baixar E-book Agora</span>
+                    <button type="submit" id="btn-download" class="w-full bg-oliva hover:bg-oliva-dark text-offwhite py-3 rounded-lg font-medium transition-all shadow-md mt-2 flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-download"></i> Baixar Arquivo PDF
                     </button>
                 </form>
-                <p class="text-[10px] text-cafe/60">Respeitamos sua privacidade. Não enviamos spam.</p>
             </div>
         </div>
     </div>
 
-    <!-- Modal 2: Leitura / Degustação -->
-    <div id="reader-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-offwhite rounded-2xl max-w-2xl w-full p-6 sm:p-8 border border-salvia/40 shadow-2xl relative max-h-[85vh] flex flex-col">
-            <button onclick="closeModal('reader-modal')" class="absolute top-4 right-4 text-cafe/60 hover:text-oliva p-2">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-            <div class="border-b border-salvia/30 pb-4 mb-4">
-                <span class="text-xs font-semibold text-dourado uppercase tracking-wider">Leitura Espiritual</span>
-                <h3 id="reader-title" class="font-heading text-2xl font-semibold text-oliva mt-1">Título do Conteúdo</h3>
-            </div>
-            <div id="reader-body" class="overflow-y-auto space-y-4 text-sm text-cafe/90 leading-relaxed pr-2 flex-grow">
-                <!-- Text populated via JS -->
-            </div>
-            <div class="pt-4 border-t border-salvia/30 flex justify-between items-center mt-4">
-                <span class="text-xs text-cafe/60 italic">Mulher de Fé — Edição Digital</span>
-                <button onclick="closeModal('reader-modal'); openModal('devocional-modal')" class="bg-dourado text-white text-xs px-4 py-2 rounded-full font-medium">Baixar Versão em PDF</button>
-            </div>
+    <!-- Custom Notification Box -->
+    <div id="notification-box" class="fixed bottom-5 right-5 z-50 bg-cafe text-offwhite px-6 py-4 rounded-xl shadow-xl border border-salvia/40 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm flex items-start gap-3">
+        <div id="notif-icon" class="text-salvia mt-0.5 text-lg">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <div class="space-y-1">
+            <h5 id="notif-title" class="font-serif font-bold text-sm text-offwhite">Sucesso</h5>
+            <p id="notif-msg" class="text-xs text-offwhite/80">Mensagem de aviso aqui.</p>
         </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-oliva text-offwhite px-5 py-3 rounded-xl shadow-2xl border border-dourado hidden transition-all duration-300 z-50 flex items-center gap-3">
-        <i class="fa-solid fa-circle-check text-dourado text-lg"></i>
-        <span id="toast-message" class="text-xs font-medium">Ação realizada com sucesso!</span>
-    </div>
-
+    <!-- JavaScript Logic & API Integration -->
     <script>
-        // Toggle Mobile Navigation
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+        // =========================================================================
+        // URL DO SEU BACKEND (APPS SCRIPT) ATUALIZADA
+        // =========================================================================
+        const API_URL = "https://script.google.com/macros/s/AKfycbw7_I5K4iSZStRcawhrqmo7kiLcMlonbrY1s-FBKZwV1BbHkLL91WPgF7exnAnzx_Cz/exec";
 
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = "fa-solid fa-bars";
+            } else {
+                icon.className = "fa-solid fa-xmark";
+            }
+        }
 
-        // Modal Controls
         function openModal(id) {
             document.getElementById(id).classList.remove('hidden');
         }
@@ -692,66 +407,113 @@
             document.getElementById(id).classList.add('hidden');
         }
 
-        // Show Toast Notification
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-            toastMessage.textContent = msg;
-            toast.classList.remove('hidden');
+        function showNotification(title, message, type = 'success') {
+            const box = document.getElementById('notification-box');
+            const titleEl = document.getElementById('notif-title');
+            const msgEl = document.getElementById('notif-msg');
+            const iconEl = document.getElementById('notif-icon');
+
+            titleEl.innerText = title;
+            msgEl.innerText = message;
+
+            if (type === 'success') {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-check text-salvia"></i>';
+            } else if (type === 'error') {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-exclamation text-red-400"></i>';
+            } else {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-info text-dourado"></i>';
+            }
+
+            box.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 3500);
+                box.classList.add('translate-y-24', 'opacity-0');
+            }, 4000);
         }
 
-        // Handle Download Form Simulation
-        function handleDownload(e) {
+        async function handleDownload(e) {
             e.preventDefault();
-            closeModal('devocional-modal');
-            showToast('Download iniciado! O seu e-book "Renovadas na Palavra" foi enviado.');
+            
+            const nome = document.getElementById('lead-nome').value;
+            const email = document.getElementById('lead-email').value;
+            const btn = document.getElementById('btn-download');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
+            btn.disabled = true;
+
+            const payload = {
+                action: "salvarLeadDevocional",
+                nome: nome,
+                email: email,
+                nome_devocional: "Renovadas na Palavra"
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === "success") {
+                    closeModal('devocional-modal');
+                    showNotification('Sucesso!', 'Cadastro realizado com sucesso! O download foi iniciado.', 'success');
+                    e.target.reset();
+                } else {
+                    showNotification('Ops!', 'Houve um erro no servidor. Tente novamente.', 'error');
+                }
+            } catch (error) {
+                console.error("Erro na requisição:", error);
+                showNotification('Erro de Conexão', 'Não foi possível conectar ao banco de dados.', 'error');
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
         }
 
-        // Read Devotional Sample Modal
-        function readDevotional(title) {
-            document.getElementById('reader-title').textContent = title;
-            document.getElementById('reader-body').innerHTML = `
-                <p class="font-serif italic text-oliva bg-areia/40 p-4 rounded-xl border-l-4 border-dourado">
-                    "Guardei a tua palavra no meu coração para não pecar contra ti." — Salmos 119:11
-                </p>
-                <p>
-                    Querida irmã, muitas vezes nos pegamos sobrecarregadas com as demandas do dia a dia. Contudo, quando reservamos os primeiros minutos da manhã para ouvir o Senhor, a nossa mente se renova e o medo perde a força.
-                </p>
-                <p>
-                    A palavra de Deus não é apenas um livro de conselhos, mas alimento vivo para o seu espírito. Ao meditar neste devocional, convido você a entregar nas mãos do Pai todas as ansiedades sobre o seu futuro, confiando que Aquele que começou a boa obra é fiel para completá-la.
-                </p>
-                <p>
-                    <strong>Oração do Dia:</strong> "Senhor Deus, abençoa meu lar e guarda os meus passos. Dá-me sabedoria para responder com graça e firmeza de fé diante dos desafios. Em nome de Jesus, amém."
-                `;
-            openModal('reader-modal');
+        async function handleSubscribe(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('newsletter-email').value;
+            const btn = document.getElementById('btn-subscribe');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+            btn.disabled = true;
+
+            const payload = {
+                action: "salvarNewsletter",
+                email: email
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                
+                const result = await response.json();
+                
+                if (result.status === "success") {
+                    showNotification('Inscrição Concluída', `O e-mail ${email} foi cadastrado com sucesso!`, 'success');
+                    e.target.reset();
+                } else {
+                    showNotification('Ops!', 'Houve um erro no servidor. Tente novamente.', 'error');
+                }
+            } catch (error) {
+                console.error("Erro na requisição:", error);
+                showNotification('Erro de Conexão', 'Não foi possível conectar ao banco de dados.', 'error');
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
         }
 
-        // Book Preview Sample Modal
-        function previewSample(bookTitle) {
-            document.getElementById('reader-title').textContent = `Capítulo de Degustação — ${bookTitle}`;
-            document.getElementById('reader-body').innerHTML = `
-                <h4 class="font-heading text-lg font-semibold text-oliva">Capítulo 1: O Deserto Não É o Seu Fim</h4>
-                <p>
-                    O deserto, nas Escrituras, raramente é um sinal de abandono divino. Pelo contrário: é frequentemente o local onde Deus nos conduz quando deseja falar mansamente ao nosso coração, longe do ruído das multidões.
-                </p>
-                <p>
-                    Se você sente que está atravessando uma fase de seca emocional ou incertezas, não se desespere. É exatamente na terra seca que as raízes da árvore se aprofundam em busca da água viva...
-                </p>
-            `;
-            openModal('reader-modal');
-        }
-
-        // Buy Book Notification Simulation
-        function buyBookModal(bookTitle) {
-            showToast(`Redirecionando para a loja oficial do livro "${bookTitle}"...`);
-        }
-
-        // Play Media Simulation
-        function playMedia(title, type) {
-            showToast(`Iniciando player de ${type === 'video' ? 'vídeo' : 'áudio'}: "${title}"`);
+        function buyBookModal(title) {
+            showNotification('Livro Selecionado', `Você demonstrou interesse em "${title}". Em breve o link de compra estará ativo.`, 'info');
         }
     </script>
 </body>
