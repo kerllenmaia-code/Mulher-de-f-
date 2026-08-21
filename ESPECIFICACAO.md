@@ -1,6 +1,6 @@
 # Especificação do Sistema — Mulher de Fé
 
-> Atualizada em 20/08/2026: adicionado o Painel Administrativo (gerencia Devocionais, Livros e Mídias) e as seções do site público passaram a ler esse conteúdo direto da planilha.
+> Atualizada em 20/08/2026: Painel Administrativo (Devocionais/Livros/Mídias/Configurações), fluxo de acesso a arquivos com identificação simples (nome+e-mail, lembrada no navegador), temas visuais de campanha e aba de Estatísticas.
 
 **Nome do projeto:** Mulher de Fé
 
@@ -65,21 +65,37 @@
 - Isto é uma proteção **simples**, do nível de um projeto de aula — não é segurança de verdade para dados sensíveis (a senha viaja em texto puro na chamada à API).
 
 ### O que dá para gerenciar
-- **Devocionais**: título, categoria, tempo de leitura, resumo, conteúdo completo (opcional), link do PDF, imagem do card, status (Rascunho/Publicado).
-- **Livros**: título, subtítulo, selo de destaque, descrição, preço, link de pagamento, link de amostra, capa (imagem), status.
+- **Devocionais**: título, categoria, tempo de leitura, resumo, conteúdo completo (opcional), link do PDF, imagem do card, status (Rascunho/Publicado — campo em destaque no formulário, com aviso visual claro).
+- **Livros**: título, subtítulo, selo de destaque, descrição, preço, link de pagamento/acesso, link de amostra, capa (imagem), status.
 - **Mídias**: título, tipo (podcast/vídeo), categoria, duração, descrição, link do arquivo/vídeo (YouTube é exibido incorporado no site), imagem de capa, status.
-- **Leads do Devocional** e **Newsletter**: só leitura — lista de quem se cadastrou pelo site.
+- **Leads do Devocional** e **Newsletter**: só leitura — lista de quem se cadastrou pelo site e qual item cada um acessou.
 - **Configurações do Site**: imagem de banner do topo, aviso da barra do topo, texto e referência do versículo do dia.
+- **Aparência / Tema**: 5 temas de cor prontos (Padrão, Agosto Lilás, Setembro Amarelo, Outubro Rosa, Novembro Azul) + tema Personalizado (2 seletores de cor, o resto é calculado automaticamente), logotipo (URL de imagem) e mensagem/faixa de campanha.
+- **Estatísticas**: visitas, devocionais/livros acessados, assinantes de newsletter e cliques em mídia — com filtro 7 dias/30 dias/Total e rankings dos itens mais acessados (barras em HTML/CSS puro, sem biblioteca externa).
 - "Remover" é sempre **soft delete** (status vira "Removido") — nunca apaga a linha da planilha.
 
 ## Site público (`index.html`) — o que mudou
 
-As seções de Devocionais, Livros e Mídias agora **leem de verdade a planilha** (só itens com status "Publicado"; rascunhos nunca aparecem no site):
-- Cada devocional no site tem seu próprio botão "Baixar PDF Completo" — ao preencher o formulário, o PDF específico daquele devocional abre em nova aba.
-- Livros mostram capa, preço e os links de pagamento/amostra cadastrados no painel.
+As seções de Devocionais, Livros e Mídias **leem de verdade a planilha** (só itens com status "Publicado"; rascunhos nunca aparecem no site):
 - Mídias com link do YouTube aparecem com o **vídeo incorporado**; as demais mostram um botão "Ouvir/Assistir" que abre o link.
 - Se a Kerllen ainda não publicou nada em alguma seção, aparece uma mensagem simpática ("em breve") em vez de erro ou tela vazia.
-- O banner do topo (imagem de fundo do herói), o aviso da barra verde e o versículo do dia também vêm da planilha (aba `Configuracoes_Site`) quando preenchidos no painel.
+- O banner do topo (imagem de fundo do herói), o aviso da barra verde, o versículo do dia, o tema de cores, o logotipo e a faixa de campanha vêm todos da planilha (aba `Configuracoes_Site`), aplicados via variáveis CSS (não precisa recompilar nada).
+
+### Acesso a Devocionais e Livros gratuitos (identificação simples)
+
+Ao clicar num devocional ou livro gratuito:
+1. **Primeira vez no navegador:** aparece um formulário pedindo Nome + E-mail. Ao confirmar, grava o lead na planilha (reaproveitando a coluna `Nome_Devocional_Baixado` de `Leads_Devocionais` para guardar o título do item — devocional OU livro) **e** abre o arquivo na hora, em nova aba, no modo de visualização do Google Drive (que tem seu próprio botão de download).
+2. **Vezes seguintes, mesmo navegador:** a identificação fica guardada no aparelho da pessoa (`localStorage`) — clique abre direto, sem pedir de novo, mas ainda registra um novo lead a cada item diferente acessado (para a Kerllen ver o histórico de cada pessoa).
+
+O site **nunca promete e-mail** — a entrega é sempre imediata (abrir o arquivo). Livros pagos (com `Preco` diferente de "gratuito"/vazio) não passam por essa identificação — o link de pagamento abre direto, como um link normal de compra.
+
+Requisito: arquivos do Google Drive linkados precisam estar compartilhados como "Qualquer pessoa com o link pode visualizar" — testado e confirmado funcionando com o arquivo real da Kerllen.
+
+### Estatísticas — registro de eventos
+
+- **Visita:** 1 por sessão de navegador (`sessionStorage`), disparada de forma assíncrona (não atrasa nem quebra o carregamento se o backend falhar).
+- **Download/acesso a Devocional ou Livro:** não duplica gravação — é contado a partir da mesma coluna `Nome_Devocional_Baixado` de `Leads_Devocionais` já usada pela identificação.
+- **Clique em Mídia:** só para o botão "Ouvir/Assistir" (mídias que não são vídeo do YouTube incorporado — medir "play" de vídeo do YouTube exigiria integração com a API do player, fora do escopo por decisão consciente de manter simples).
 
 ---
 
@@ -92,10 +108,11 @@ As seções de Devocionais, Livros e Mídias agora **leem de verdade a planilha*
 | `Conteudo_Devocionais` | ID, Status_Publicacao, Data_Publicacao, Categoria, Tempo_Leitura_Min, Titulo, Resumo, Conteudo_Completo_HTML, Link_PDF, **Imagem_Url** |
 | `Conteudo_Livros` | ID, Status, Selo_Destaque, Titulo, Subtitulo, Descricao, Preco, Link_Pagamento, Link_Amostra, **Imagem_Url** |
 | `Conteudo_Midias` | ID, Status, Tipo_Midia, Categoria_Selo, Titulo, Duracao, Descricao, Link_Arquivo_Url, **Imagem_Url** |
-| `Configuracoes_Site` | Chave, Valor, Descricao_Uso |
+| `Configuracoes_Site` | Chave, Valor, Descricao_Uso — chaves em uso: `versiculo_diario_texto`, `versiculo_diario_ref`, `aviso_topo_texto`, `imagem_hero_url`, `tema_id`, `tema_cor_primaria`, `tema_cor_destaque`, `logo_url`, `campanha_mensagem` |
+| `Estatisticas` | ID, Data_Hora, Tipo_Evento (`visita`/`media`), Item — sem dado pessoal |
 | `Página1` | aba padrão criada pelo Google Sheets, sem uso |
 
-**Colunas novas nesta revisão:** `Imagem_Url` foi adicionada ao final das três abas de conteúdo (só isso — nenhum cabeçalho existente foi renomeado ou movido). Nada foi apagado.
+**Colunas/abas novas:** `Imagem_Url` no final das três abas de conteúdo; aba `Estatisticas` inteira; novas chaves em `Configuracoes_Site`. Nada foi renomeado, movido ou apagado.
 
 ---
 
@@ -103,7 +120,9 @@ As seções de Devocionais, Livros e Mídias agora **leem de verdade a planilha*
 
 Leituras públicas (GET, sem senha — só devolvem itens "Publicado"): `getDevocionaisPublicados`, `getLivrosPublicados`, `getMidiasPublicadas`, `getConfiguracoesPublicas`, `ping`.
 
-Ações do painel (POST, **exigem `senha`** no corpo da requisição): `verificarSenha`, `trocarSenha`, `listarDevocionais`/`addDevocional`/`updateDevocional`/`deleteDevocional` (e equivalentes para Livros/Mídias), `listarConfiguracoes`/`updateConfiguracao`, `listarLeads`, `listarNewsletter` (as duas últimas só leitura).
+Escrita pública sem senha (POST): `registrarEvento` (`tipo`: "visita"/"media", `item` opcional) — só grava estatística sem dado pessoal, precisa ser chamável por qualquer visitante anônimo.
+
+Ações do painel (POST, **exigem `senha`** no corpo da requisição): `verificarSenha`, `trocarSenha`, `listarDevocionais`/`addDevocional`/`updateDevocional`/`deleteDevocional` (e equivalentes para Livros/Mídias), `listarConfiguracoes`/`updateConfiguracao`, `listarLeads`, `listarNewsletter` (só leitura), `getResumoEstatisticas` (visitas/downloads/newsletter/mídia por período + rankings).
 
 ### Como atualizar o backend do painel (deploy via clasp)
 
@@ -131,3 +150,5 @@ A URL pública não muda entre versões.
 - Autenticação mais forte para o painel (hoje é senha simples).
 - Editor de conteúdo mais rico para `Conteudo_Completo_HTML` do devocional (hoje é um campo de texto simples).
 - Unificar os dois backends num só (hoje existem dois Apps Scripts separados porque o Luciano não tinha acesso de edição ao projeto original da Kerllen — ver `CORRECOES_E_LICOES.md`).
+- Medir "play" real de vídeos do YouTube incorporados (exigiria integração com a API do player do YouTube).
+- Upload de imagem/logo direto no painel (hoje só aceita URL de uma imagem já hospedada em outro lugar).

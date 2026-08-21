@@ -10,8 +10,10 @@ Uma página de divulgação de conteúdo devocional cristão, no ar em:
 
 ## O que os visitantes podem fazer
 
-1. **Baixar o devocional gratuito** — clicam no botão "Baixar Devocional Gratuito" (no topo ou no início da página), preenchem Nome e E-mail, e enviam.
+1. **Acessar um Devocional ou Livro gratuito** — clicam no botão do item (ex.: "Baixar Livro", "Acessar Devocional"). **Na primeira vez**, aparece um formulário pedindo Nome e E-mail; depois de enviar, o arquivo abre na hora, em outra aba, no visualizador do Google Drive (que tem seu próprio botão "Baixar"). **Nas vezes seguintes**, se for no mesmo navegador/computador, o arquivo abre direto — o site "lembra" que a pessoa já se identificou e não pergunta de novo.
 2. **Assinar a newsletter** — no final da página, digitam só o e-mail e clicam em "Inscrever".
+
+Importante: o site **não envia nada por e-mail** — a entrega é sempre imediata, abrindo o arquivo na hora. Isso é intencional (mais simples e mais confiável do que depender de e-mail).
 
 ## Onde os dados aparecem
 
@@ -20,10 +22,11 @@ Tudo o que é preenchido nos formulários vai direto para a planilha do Google:
 **"Banco de Dados Mulheres de Fé"**
 https://docs.google.com/spreadsheets/d/1WvTjCKAtO1QSZ3ciFYepvnxlOmkKL9A608jwvdZQjug/edit
 
-- Quem baixou o devocional aparece na aba **Leads_Devocionais** (nome, e-mail, data e hora).
+- Quem acessou um Devocional ou Livro aparece na aba **Leads_Devocionais** (nome, e-mail, **qual item acessou**, data e hora) — inclusive um registro novo a cada vez que a mesma pessoa acessa um item diferente, mesmo já identificada.
 - Quem assinou a newsletter aparece na aba **Newsletter** (e-mail, data e hora).
+- Visitas ao site e cliques em mídias aparecem na aba **Estatisticas** (sem nome nem e-mail — só para contar números).
 
-Não é preciso fazer nada para os dados chegarem lá — é automático assim que a pessoa clica em enviar no site.
+Não é preciso fazer nada para os dados chegarem lá — é automático assim que a pessoa usa o site.
 
 ## Como saber se está tudo funcionando
 
@@ -44,11 +47,42 @@ Agora existe uma tela própria para a Kerllen cadastrar e editar o conteúdo do 
 
 ### O que dá para fazer no painel
 
-- **Devocionais**, **Livros** e **Mídias**: clique em "Novo" para cadastrar, ou "Editar"/"Remover" num item já existente. Cada um tem um campo para colar o **link** (PDF do devocional, link de compra do livro, link do vídeo/áudio) e um campo para colar a **URL de uma imagem** (capa, banner do card). Todo item tem um status: "Rascunho" (não aparece no site) ou "Publicado" (aparece).
-- **Leads (Devocional)** e **Newsletter**: são só para consulta — mostra quem se cadastrou pelo site, não dá para editar por aqui.
+- **Devocionais**, **Livros** e **Mídias**: clique em "Novo" para cadastrar, ou "Editar"/"Remover" num item já existente. Cada um tem um campo para colar o **link** (PDF do devocional, link de compra ou de acesso do livro, link do vídeo/áudio) e um campo para colar a **URL de uma imagem** (capa, banner do card).
+
+  **⚠️ Atenção ao campo "Visibilidade no site" dentro do formulário** — é o erro mais comum: todo item novo começa como **"Rascunho"**, que só você vê aqui no painel. **O site público só mostra o que estiver marcado como "Publicado"**. Esse campo agora aparece bem destacado no formulário (com uma cor de aviso quando está em Rascunho) — não esqueça de marcá-lo como "Publicado" antes de sair da tela, se quiser que o item apareça no site.
+- **Leads (Devocional)** e **Newsletter**: são só para consulta — mostra quem se cadastrou pelo site (e o que cada um acessou), não dá para editar por aqui.
 - **Configurações do Site**: o texto e a referência do "Versículo do Dia", o aviso da barra verde do topo, e a imagem de banner que aparece atrás do título principal do site.
+- **Aparência / Tema**: veja a seção própria abaixo.
+- **Estatísticas**: veja a seção própria abaixo.
 
 Assim que você salva algo como "Publicado" no painel, ele aparece no site público em poucos segundos (só recarregar a página).
+
+### Links para PDFs do Google Drive
+
+Quando colar um link de PDF/arquivo do Google Drive, ele precisa estar compartilhado como **"Qualquer pessoa com o link pode visualizar"** (não "Restrito"). Para conferir: no Drive, botão direito no arquivo → Compartilhar → em "Acesso geral", escolha "Qualquer pessoa com o link". Sem isso, quem clicar no site vê uma tela pedindo permissão em vez do arquivo.
+
+## Aparência / Tema — trocando as cores por campanha
+
+O painel tem uma aba **"Aparência / Tema"** para trocar o visual do site conforme as campanhas do ano (Agosto Lilás, Setembro Amarelo, Outubro Rosa, Novembro Azul), ou usar cores próprias.
+
+1. Clique no tema desejado (aparece um contorno em volta do escolhido).
+2. Se escolher **"Personalizado"**, aparecem dois seletores de cor ("Cor principal" e "Cor de destaque") — as demais tonalidades são calculadas automaticamente.
+3. Opcionalmente, preencha o **Logotipo** (URL de uma imagem, substitui o "M" redondo) e a **Mensagem/faixa de campanha** (aparece como uma faixa de destaque logo abaixo do menu).
+4. Clique em "Salvar aparência" — o site já mostra o novo visual assim que a página for recarregada.
+
+O texto do site (cor escura) e o fundo (cor clara) nunca mudam, em nenhum tema — isso garante que o texto sempre fique fácil de ler, seja qual for a cor escolhida.
+
+## Estatísticas — acompanhando o desempenho do site
+
+A aba **"Estatísticas"** mostra, em números grandes:
+- **Visitas** ao site;
+- **Devocionais/Livros acessados** (quantas vezes alguém abriu um item, contando os retornos);
+- **Assinantes da Newsletter**;
+- **Cliques em Mídias**.
+
+Dá para trocar entre "7 dias", "30 dias" e "Total" no canto superior direito da aba. Abaixo dos números, dois rankings em barra mostram quais Devocionais/Livros e quais Mídias são os mais acessados — útil para saber o que está fazendo sucesso.
+
+*(Nota técnica: mídias do YouTube incorporadas no site não têm contador de "play" — isso exigiria uma integração mais complexa com o player do YouTube. Só o clique no botão "Ouvir/Assistir", usado por mídias que não são do YouTube, é contado.)*
 
 ### Dica sobre imagens
 

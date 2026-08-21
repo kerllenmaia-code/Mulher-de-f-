@@ -93,4 +93,51 @@ Depois que o Luciano autorizou o novo backend (passo manual único, obrigatório
 
 ---
 
+## Atualização de 20/08/2026 (noite, parte 2) — Livro sumido, download que não baixava, Temas e Estatísticas
+
+A Kerllen já estava usando o painel de verdade (trocou a senha provisória pela dela mesma e cadastrou o livro "30 gatilhos mentais") quando apareceram dois relatos de bug reais dela, mais dois pedidos de funcionalidade nova.
+
+### 8. "Cadastrei um livro e ele não aparece no site"
+
+**O que era:** o registro do livro na planilha estava **perfeito** — todos os campos no lugar certo, nada torto ou deslocado. O problema era só um: o campo de status ficou em **"Rascunho"** (o padrão de todo item novo), e o site só mostra itens marcados **"Publicado"**.
+
+**Sintoma:** livro cadastrado certinho, mas invisível no site — parecia um bug de gravação ou de leitura, mas era só um passo esquecido.
+
+**Correção:** o registro dela foi corrigido diretamente (status trocado para "Publicado" — **a linha dela não foi apagada nem recriada**, só esse um campo mudou). Além disso, o campo de visibilidade no formulário do painel ficou bem mais chamativo: agora são dois botões grandes ("Rascunho"/"Publicado") com um aviso em destaque, em vez de uma caixinha de seleção discreta fácil de ignorar.
+
+**Como evitar no futuro:** sempre que um sistema tiver um "modo rascunho", o campo que controla isso precisa ser a coisa mais visível da tela de edição — é o tipo de esquecimento que qualquer pessoa comete, não só quem está aprendendo.
+
+### 9. "Diz que baixou, mas não baixa nada, e não chega e-mail"
+
+**O que era, na real, TRÊS problemas diferentes empilhados:**
+1. O botão genérico "Baixar Devocional Gratuito" (do topo do site) nunca tinha nenhum arquivo de verdade vinculado a ele — não existia devocional publicado ainda, então não tinha o que abrir.
+2. Quando existia um arquivo, o código tentava abrir a nova aba **depois** de esperar a resposta do servidor (`await`) — e navegadores costumam bloquear a abertura de uma aba nova quando isso acontece "tarde demais" depois do clique da pessoa (chamado de bloqueio de pop-up).
+3. O texto da tela prometia "receber o PDF no seu e-mail" — mas **nenhum dos dois backends deste site nunca implementou envio de e-mail**. Era uma promessa que o código nunca cumpria.
+
+**Decisão tomada (a pedido da Kerllen):** em vez de tentar implementar envio de e-mail de verdade (mais complexo, sujeito a cair no spam, com limite diário de envios), a entrega passou a ser **imediata**: a pessoa se identifica uma vez (nome + e-mail), e o arquivo abre na hora numa nova aba, no visualizador do Google Drive — que já tem seu próprio botão de baixar. Da segunda vez em diante, o navegador "lembra" quem já se identificou (guardado no aparelho da pessoa, não em nenhum servidor) e abre direto.
+
+**Correção técnica:** o código passou a abrir o arquivo **antes** de chamar o servidor (não depois), o que evita o bloqueio de pop-up; todos os textos que prometiam e-mail foram reescritos para descrever o que realmente acontece.
+
+**Como evitar no futuro:** nunca escrever num texto de tela algo que o código não faz de verdade ("vamos te enviar por e-mail" só vale se existir, de fato, uma linha de código que manda e-mail). E: ações que abrem uma nova aba/janela em resposta a um clique devem acontecer o mais rápido possível, antes de qualquer espera de rede — senão o navegador pode barrar.
+
+### 10. Dois recursos novos: Temas de campanha e Estatísticas
+
+A pedido do Luciano/Kerllen, foram criados:
+- **Aba "Aparência/Tema"** no painel: troca as cores do site (Agosto Lilás, Setembro Amarelo, Outubro Rosa, Novembro Azul, ou cores personalizadas), logotipo e uma faixa de mensagem de campanha — sem precisar mexer em código, só clicando.
+- **Aba "Estatísticas"**: visitas, downloads, assinantes e cliques em mídia, com filtro de período e rankings dos itens mais acessados.
+
+**Detalhe técnico que vale a pena entender:** as cores do site usam "variáveis CSS" — como se fossem caixinhas nomeadas (`--cor-oliva`, `--cor-dourado`...) que todo o site usa. Trocar o CONTEÚDO dessas caixinhas muda a cor em tudo, na hora, sem precisar editar cada botão/título um por um.
+
+### 11. Bug encontrado no teste: números da aba Estatísticas zerados no filtro de período
+
+**O que era:** ao testar a aba Estatísticas, o total geral mostrava certo (ex.: "2 downloads"), mas os filtros "7 dias" e "30 dias" mostravam **0** — mesmo para coisas que tinham acabado de acontecer.
+
+**Causa:** o backend original da Kerllen (que grava quem baixou o quê) usa um fuso horário ligeiramente diferente do backend novo (que soma os números). Isso fazia alguns registros parecerem "gravados no futuro" por alguns minutos — e o cálculo de período tinha uma regra rígida demais ("só conta se não for do futuro"), que descartava esses registros.
+
+**Correção:** o cálculo passou a ignorar se a diferença é "passado" ou "futuro" e olhar só o tamanho da diferença — assim, pequenas divergências de fuso entre os dois backends não fazem mais nenhum registro sumir da contagem.
+
+**Como evitar no futuro:** quando dois sistemas diferentes gravam datas/horas que depois são comparadas entre si, nunca assumir que os relógios/fusos batem perfeitamente — sempre que possível, usar uma comparação tolerante (diferença absoluta) em vez de uma regra rígida de "antes/depois".
+
+---
+
 *Documento criado como parte do processo padrão de entrega dos projetos da Turma 2 IA na Prática. Serve como material de estudo — não é preciso entender de programação para ler; cada item explica o problema com uma comparação do dia a dia.*
