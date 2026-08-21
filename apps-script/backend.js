@@ -273,7 +273,6 @@ function doPost(e) {
       return ContentService.createTextOutput(JSON.stringify(handleRegistrarEvento(data)))
         .setMimeType(ContentService.MimeType.JSON);
     }
-
     if (!senhaValida(data)) {
       return ContentService.createTextOutput(JSON.stringify(respostaSemPermissao()))
         .setMimeType(ContentService.MimeType.JSON);
@@ -460,8 +459,14 @@ function contarPorPeriodo(lista, campoData) {
   function dentroDe(item, dias) {
     const d = parseDataBR(item[campoData]);
     if (!d) return false;
-    const diffMs = agora - d;
-    return diffMs >= 0 && diffMs <= dias * 24 * 60 * 60 * 1000;
+    // Usa valor absoluto (não só "diferença >= 0"): o backend ORIGINAL da
+    // Kerllen (que grava Leads_Devocionais/Newsletter) pode estar
+    // configurado num fuso ligeiramente diferente do fuso deste backend
+    // (America/Manaus), fazendo alguns registros parecerem "no futuro" por
+    // minutos/poucas horas — sem essa tolerância, eles somem do período
+    // mesmo tendo acabado de acontecer.
+    const diffMs = Math.abs(agora - d);
+    return diffMs <= dias * 24 * 60 * 60 * 1000;
   }
   return {
     dias7: lista.filter(function (x) { return dentroDe(x, 7); }).length,
