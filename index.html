@@ -763,7 +763,7 @@
                                 </div>
                             </div>
                             ${m.Link_Arquivo_Url
-                                ? `<a href="${esc(m.Link_Arquivo_Url)}" target="_blank" rel="noopener" class="text-xs font-semibold text-oliva hover:underline shrink-0">Ouvir / Assistir</a>`
+                                ? `<a href="${esc(m.Link_Arquivo_Url)}" target="_blank" rel="noopener" onclick="registrarEventoMidia('${esc(m.Titulo).replace(/'/g, "\\'")}')" class="text-xs font-semibold text-oliva hover:underline shrink-0">Ouvir / Assistir</a>`
                                 : `<button onclick="showNotification('Em Breve', 'Este conteúdo estará disponível em breve.', 'info')" class="text-xs font-semibold text-oliva hover:underline shrink-0">Em breve</button>`}
                         </div>`;
                 }).join('');
@@ -772,6 +772,34 @@
             }
         }
 
+        // Registra um clique em "Ouvir/Assistir" (mídias que não são vídeo do
+        // YouTube incorporado — para YouTube não medimos play de verdade, exigiria
+        // integração com a API do player; mantido simples de propósito).
+        // Fire-and-forget: não atrapalha a navegação para o link.
+        function registrarEventoMidia(titulo) {
+            fetch(API_URL_PAINEL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'registrarEvento', tipo: 'media', item: titulo }),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            }).catch(err => console.error('Não foi possível registrar o evento de mídia:', err));
+        }
+
+        // Registra 1 visita por sessão de navegador (não conta a cada
+        // recarregamento da página). Disparado sem "await" e com .catch —
+        // nunca atrasa nem quebra o carregamento do site se o backend falhar.
+        function registrarVisitaUmaVez() {
+            try {
+                if (sessionStorage.getItem('mdf_visita_registrada')) return;
+                sessionStorage.setItem('mdf_visita_registrada', '1');
+            } catch (err) { /* sessionStorage bloqueado: segue sem contar, sem travar nada */ return; }
+            fetch(API_URL_PAINEL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'registrarEvento', tipo: 'visita' }),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            }).catch(err => console.error('Não foi possível registrar a visita:', err));
+        }
+
+        registrarVisitaUmaVez();
         carregarConfiguracoesPublicas();
         carregarDevocionaisPublicos();
         carregarLivrosPublicos();

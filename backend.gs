@@ -22,6 +22,7 @@ const SHEET_MIDIAS = "Conteudo_Midias";
 const SHEET_LEADS = "Leads_Devocionais";
 const SHEET_NEWSLETTER = "Newsletter";
 const SHEET_CONFIG = "Configuracoes_Site";
+const SHEET_ESTATISTICAS = "Estatisticas";
 
 /**
  * Senha PROVISÓRIA do painel administrativo — só vale antes da primeira
@@ -257,16 +258,21 @@ function configComoMapa() {
 }
 
 /**
- * POST: todas as ações do PAINEL ADMINISTRATIVO — todas exigem
- * data.senha === getSenhaAtual() (verificado logo no início). A única
- * exceção conceitual é "verificarSenha"/"trocarSenha": elas TAMBÉM
- * passam por essa checagem (a senha enviada precisa ser a atual), o que
- * já resolve o login e a confirmação da senha antiga na troca.
+ * POST: a maioria das ações é do PAINEL ADMINISTRATIVO e exige
+ * data.senha === getSenhaAtual() (verificado logo no início). A exceção
+ * é "registrarEvento" — precisa ser chamável por QUALQUER visitante do
+ * site anônimo (não passa por senha), mas só grava um evento simples
+ * (tipo + item), sem nenhum dado pessoal.
  */
 function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
     const action = data.action || "";
+
+    if (action === "registrarEvento") {
+      return ContentService.createTextOutput(JSON.stringify(handleRegistrarEvento(data)))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
 
     if (!senhaValida(data)) {
       return ContentService.createTextOutput(JSON.stringify(respostaSemPermissao()))
@@ -276,6 +282,11 @@ function doPost(e) {
     let response;
 
     switch (action) {
+      // ---- Estatísticas ----
+      case "getResumoEstatisticas":
+        response = handleGetResumoEstatisticas();
+        break;
+
       // ---- Login / senha ----
       case "verificarSenha":
         response = { success: true, trocaPendente: trocaPendente() };
@@ -408,6 +419,87 @@ function handleUpdateConfiguracao(data) {
   }
   sheet.getRange(lastRow + 1, 1, 1, novaLinha.length).setValues([novaLinha]);
   return { success: true, message: "Configuração criada" };
+}
+
+// ==================== HANDLERS - ESTATÍSTICAS ====================
+// Aba "Estatisticas": ID, Data_Hora, Tipo_Evento, Item
+// Tipos de evento aceitos: "visita" (1 por sessão, Item vazio) e "media"
+// (reprodução/clique de mídia, Item = título da mídia). Downloads de
+// Devocionais/Livros NÃO duplicam gravação aqui — são contados a partir
+// da coluna Nome_Devocional_Baixado da aba Leads_Devocionais, que já é
+// preenchida pelo fluxo de identificação do site a cada acesso.
+
+function handleRegistrarEvento(data) {
+  const tipo = String(data.tipo || "").trim();
+  if (["visita", "media"].indexOf(tipo) === -1) {
+    return { success: false, error: "Tipo de evento inválido" };
+  }
+  const evento = {
+    ID: proximoIdNumerico(SHEET_ESTATISTICAS),
+    Data_Hora: hojeBR(),
+    Tipo_Evento: tipo,
+    Item: String(data.item || "").trim()
+  };
+  return addRow(SHEET_ESTATISTICAS, evento);
+}
+
+/**
+ * Lê uma data no formato "dd/MM/aaaa HH:mm" ou "dd/MM/aaaa HH:mm:ss"
+ * (formatos usados pelos dois backends deste site) e devolve um Date, ou
+ * null se não for possível interpretar.
+ */
+function parseDataBR(texto) {
+  if (!texto) return null;
+  const m = String(texto).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})[ ,T]?(\d{1,2}):(\d{2})(?::(\d{2}))?/);
+  if (!m) return null;
+  return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]), Number(m[4]), Number(m[5]), Number(m[6] || 0));
+}
+
+function contarPorPeriodo(lista, campoData) {
+  const agora = new Date();
+  function dentroDe(item, dias) {
+    const d = parseDataBR(item[campoData]);
+    if (!d) return false;
+    const diffMs = agora - d;
+    return diffMs >= 0 && diffMs <= dias * 24 * 60 * 60 * 1000;
+  }
+  return {
+    dias7: lista.filter(function (x) { return dentroDe(x, 7); }).length,
+    dias30: lista.filter(function (x) { return dentroDe(x, 30); }).length,
+    total: lista.length
+  };
+}
+
+function rankingPorItem(lista, campoItem, limite) {
+  const contagem = {};
+  lista.forEach(function (x) {
+    const item = String(x[campoItem] || "").trim();
+    if (!item) return;
+    contagem[item] = (contagem[item] || 0) + 1;
+  });
+  return Object.keys(contagem)
+    .map(function (item) { return { item: item, total: contagem[item] }; })
+    .sort(function (a, b) { return b.total - a.total; })
+    .slice(0, limite || 10);
+}
+
+function handleGetResumoEstatisticas() {
+  const eventos = sheetToJson(SHEET_ESTATISTICAS);
+  const leads = sheetToJson(SHEET_LEADS);
+  const newsletter = sheetToJson(SHEET_NEWSLETTER);
+
+  const visitas = eventos.filter(function (e) { return e.Tipo_Evento === "visita"; });
+  const midiaEventos = eventos.filter(function (e) { return e.Tipo_Evento === "media"; });
+
+  return {
+    success: true,
+    visitas: contarPorPeriodo(visitas, "Data_Hora"),
+    downloads: contarPorPeriodo(leads, "Data_Hora"),
+    newsletter: contarPorPeriodo(newsletter, "Data_Hora"),
+    midiaPlays: contarPorPeriodo(midiaEventos, "Data_Hora"),
+    rankingDownloads: rankingPorItem(leads, "Nome_Devocional_Baixado", 10),
+    rankingMidias: rankingPorItem(midiaEventos, "Item", 10)
+  };
 }
 
 // ==================== HANDLERS - DEVOCIONAIS ====================
