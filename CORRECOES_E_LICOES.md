@@ -52,4 +52,32 @@ Comparando com os erros clássicos que aparecem nos outros projetos da turma, o 
 
 ---
 
+## Atualização de 20/08/2026 (à noite) — Painel Administrativo
+
+Depois da revisão inicial, o Luciano pediu a construção de um **Painel Administrativo** para a Kerllen gerenciar Devocionais, Livros e Mídias sem mexer na planilha. Isso resolveu, de vez, os dois pontos de atenção listados acima:
+
+### 3. "Conteúdo que ainda não é lido pelo site" → agora está resolvido
+
+O `index.html` passou a buscar Devocionais/Livros/Mídias/Configurações de verdade na planilha (só os itens marcados "Publicado"). O painel (`admin.html`) é a tela onde a Kerllen cadastra esse conteúdo — incluindo links (PDF, vídeo, compra) e imagens (por URL). **Lição:** o "próximo passo" documentado num `ESPECIFICACAO.md` não é perdido — ele guia exatamente o que construir depois.
+
+### 4. "Backend não versionado" → parcialmente resolvido (um segundo backend, esse sim versionado)
+
+Como não havia acesso de edição ao projeto Apps Script original da Kerllen (só à planilha), a solução foi publicar um **segundo backend**, numa conta diferente (Luciano), vinculado à MESMA planilha — e esse sim com o código guardado no repositório (`backend.gs` e `apps-script/`). O backend original da Kerllen continua intacto, cuidando só dos formulários públicos.
+
+**Lição para a Kerllen:** ter dois backends para o mesmo site funciona, mas não é o ideal a longo prazo — o ideal é ela dar acesso de edição do projeto Apps Script dela para quem for ajudar a manter o sistema, para existir só UM backend, mais fácil de entender e dar manutenção.
+
+### 5. Senha do painel: por que não fica escrita no código
+
+**O que foi pensado:** se a senha do painel ficasse escrita direto no HTML (`admin.html`), qualquer pessoa que abrisse o código-fonte da página (Ctrl+U no navegador) veria a senha atual.
+
+**Como foi resolvido:** a senha "de verdade" fica guardada nas **Propriedades do Script** do Apps Script — um cofre que existe fora da planilha e fora de qualquer arquivo do site. O código só guarda uma senha PROVISÓRIA, que o painel obriga a trocar no primeiro uso; depois da troca, nem essa senha provisória serve mais para nada.
+
+**Como evitar no futuro:** sempre que um projeto precisar de "senha simples" (sem um sistema de login de verdade), evitar deixar a senha atual escrita em texto puro num arquivo público (HTML/JS que qualquer visitante baixa) — usar algum tipo de armazenamento do lado do servidor, como fizemos aqui.
+
+### 6. Novas colunas na planilha: como foram adicionadas sem risco
+
+Foi preciso guardar a URL de uma imagem para cada Devocional/Livro/Mídia, mas as abas da planilha não tinham essa coluna. **Como foi feito com segurança:** antes de escrever, o script conferiu que a célula do cabeçalho novo (`Imagem_Url`) estava realmente vazia — só então escreveu. Nenhuma coluna existente foi renomeada, movida ou apagada. **Lição:** é seguro ADICIONAR uma coluna nova no fim de uma aba; o que nunca deve ser feito sem necessidade comprovada é renomear ou mover uma coluna que já existe (isso quebra tudo que já lê essa aba).
+
+---
+
 *Documento criado como parte do processo padrão de entrega dos projetos da Turma 2 IA na Prática. Serve como material de estudo — não é preciso entender de programação para ler; cada item explica o problema com uma comparação do dia a dia.*

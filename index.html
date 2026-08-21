@@ -61,7 +61,7 @@
             </nav>
 
             <div class="hidden md:flex items-center gap-4">
-                <button onclick="openModal('devocional-modal')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm hover:shadow flex items-center gap-2">
+                <button onclick="abrirModalDevocional()" class="bg-oliva hover:bg-oliva-dark text-offwhite px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm hover:shadow flex items-center gap-2">
                     <i class="fa-solid fa-download text-xs"></i> Baixar Devocional
                 </button>
             </div>
@@ -78,14 +78,15 @@
             <a href="#livros" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Livros</a>
             <a href="#midias" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Mensagens</a>
             <a href="#sobre" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Sobre</a>
-            <button onclick="openModal('devocional-modal'); toggleMobileMenu();" class="w-full bg-oliva text-offwhite py-3 rounded-lg text-sm font-medium mt-2 flex items-center justify-center gap-2">
+            <button onclick="abrirModalDevocional(); toggleMobileMenu();" class="w-full bg-oliva text-offwhite py-3 rounded-lg text-sm font-medium mt-2 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-download"></i> Baixar Devocional
             </button>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="relative py-16 sm:py-24 overflow-hidden bg-gradient-to-b from-salvia/15 to-offwhite">
+    <section id="hero-section" class="relative py-16 sm:py-24 overflow-hidden bg-gradient-to-b from-salvia/15 to-offwhite bg-cover bg-center">
+        <div id="hero-overlay" class="absolute inset-0 hidden bg-offwhite/80"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
                 <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-salvia/20 text-oliva-dark text-xs font-semibold tracking-wide uppercase">
@@ -98,7 +99,7 @@
                     Um refúgio acolhedor para mulheres que buscam nutrir a alma através da Palavra, reflexões profundas e comunhão genuína.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-                    <button onclick="openModal('devocional-modal')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-8 py-3.5 rounded-full font-medium shadow-md transition-all flex items-center justify-center gap-2">
+                    <button onclick="abrirModalDevocional()" class="bg-oliva hover:bg-oliva-dark text-offwhite px-8 py-3.5 rounded-full font-medium shadow-md transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-download"></i> Baixar Devocional Gratuito
                     </button>
                     <a href="#devocionais" class="border border-oliva/40 hover:border-oliva text-cafe px-8 py-3.5 rounded-full font-medium transition-all flex items-center justify-center gap-2">
@@ -134,72 +135,8 @@
                 <p class="text-cafe/70 text-sm sm:text-base">Reflexões guiadas para fortalecer seu caminhar com Deus a cada amanhecer.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 bg-salvia/20 flex items-center justify-center relative">
-                            <span class="absolute top-3 left-3 bg-oliva text-offwhite text-xs px-2.5 py-1 rounded-full font-medium">Novo</span>
-                            <i class="fa-solid fa-seedling text-4xl text-oliva/60"></i>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center gap-2 text-xs text-oliva font-semibold">
-                                <i class="fa-regular fa-clock"></i> 5 min de leitura
-                            </div>
-                            <h3 class="font-serif text-xl font-bold text-cafe">Renovadas na Palavra</h3>
-                            <p class="text-sm text-cafe/70 line-clamp-3">Descubra como renovar suas forças espirituais em meio às demandas diárias através da graça constante do Senhor.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <button onclick="openModal('devocional-modal')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
-                            Baixar PDF Completo
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 2 -->
-                <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 bg-salvia/20 flex items-center justify-center relative">
-                            <span class="absolute top-3 left-3 bg-dourado text-offwhite text-xs px-2.5 py-1 rounded-full font-medium">Mais Baixado</span>
-                            <i class="fa-solid fa-heart-pulse text-4xl text-oliva/60"></i>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center gap-2 text-xs text-oliva font-semibold">
-                                <i class="fa-regular fa-clock"></i> 7 min de leitura
-                            </div>
-                            <h3 class="font-serif text-xl font-bold text-cafe">A Paz que Excede Todo Entendimento</h3>
-                            <p class="text-sm text-cafe/70 line-clamp-3">Um guia prático e devocional sobre como combater a ansiedade através da oração e entrega total no altar de Deus.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <button onclick="openModal('devocional-modal')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
-                            Baixar PDF Completo
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-                    <div>
-                        <div class="h-48 bg-salvia/20 flex items-center justify-center relative">
-                            <span class="absolute top-3 left-3 bg-oliva text-offwhite text-xs px-2.5 py-1 rounded-full font-medium">Essencial</span>
-                            <i class="fa-solid fa-hands-praying text-4xl text-oliva/60"></i>
-                        </div>
-                        <div class="p-6 space-y-3">
-                            <div class="flex items-center gap-2 text-xs text-oliva font-semibold">
-                                <i class="fa-regular fa-clock"></i> 6 min de leitura
-                            </div>
-                            <h3 class="font-serif text-xl font-bold text-cafe">Mães que Oram por Seus Filhos</h3>
-                            <p class="text-sm text-cafe/70 line-clamp-3">O poder transformador da intercessão materna na vida e no futuro da próxima geração.</p>
-                        </div>
-                    </div>
-                    <div class="p-6 pt-0">
-                        <button onclick="openModal('devocional-modal')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
-                            Baixar PDF Completo
-                        </button>
-                    </div>
-                </div>
+            <div id="grid-devocionais" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <p class="md:col-span-3 text-center text-sm text-cafe/50">Carregando devocionais…</p>
             </div>
         </div>
     </section>
@@ -212,40 +149,8 @@
                 <p class="text-cafe/70 text-sm sm:text-base">Obras literárias escritas para edificar seu lar e aprofundar sua identidade cristã.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <!-- Book 1 -->
-                <div class="bg-white p-6 rounded-2xl border border-salvia/30 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
-                    <div class="w-36 h-48 bg-oliva/10 rounded-lg flex items-center justify-center shrink-0 border border-salvia/30">
-                        <i class="fa-solid fa-book text-5xl text-oliva"></i>
-                    </div>
-                    <div class="space-y-3 text-center sm:text-left">
-                        <span class="text-xs font-semibold bg-dourado/20 text-cafe px-2.5 py-1 rounded-full">Bestseller</span>
-                        <h3 class="font-serif text-xl font-bold text-cafe">Essência de Mulher</h3>
-                        <p class="text-sm text-cafe/70">Reflexões profundas sobre o valor e a dignidade da mulher segundo o design original de Deus.</p>
-                        <div class="pt-2">
-                            <button onclick="buyBookModal('Essência de Mulher')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm">
-                                Adquirir Exemplo / Livro
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Book 2 -->
-                <div class="bg-white p-6 rounded-2xl border border-salvia/30 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
-                    <div class="w-36 h-48 bg-oliva/10 rounded-lg flex items-center justify-center shrink-0 border border-salvia/30">
-                        <i class="fa-solid fa-book-bookmark text-5xl text-oliva"></i>
-                    </div>
-                    <div class="space-y-3 text-center sm:text-left">
-                        <span class="text-xs font-semibold bg-salvia/30 text-cafe px-2.5 py-1 rounded-full">Lançamento</span>
-                        <h3 class="font-serif text-xl font-bold text-cafe">Tratado de Paz no Lar</h3>
-                        <p class="text-sm text-cafe/70">Conselhos práticos baseados na sabedoria bíblica para harmonizar a convivência familiar.</p>
-                        <div class="pt-2">
-                            <button onclick="buyBookModal('Tratado de Paz no Lar')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm">
-                                Adquirir Exemplo / Livro
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <div id="grid-livros" class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <p class="md:col-span-2 text-center text-sm text-cafe/50">Carregando livros…</p>
             </div>
         </div>
     </section>
@@ -258,36 +163,8 @@
                 <p class="text-cafe/70 text-sm sm:text-base">Ouça ministrações inspiradoras que trazem direção e conforto para o coração.</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                <div class="bg-offwhite p-6 rounded-xl border border-salvia/30 flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-oliva text-offwhite flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-play"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-oliva font-semibold">Podcast • Episódio 14</span>
-                            <h4 class="font-serif font-bold text-cafe">A Força da Oração Silenciosa</h4>
-                        </div>
-                    </div>
-                    <button onclick="showNotification('Em Breve', 'Este áudio estará disponível para reprodução na próxima atualização.', 'info')" class="text-xs font-semibold text-oliva hover:underline shrink-0">
-                        Ouvir Agora
-                    </button>
-                </div>
-
-                <div class="bg-offwhite p-6 rounded-xl border border-salvia/30 flex items-center justify-between gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 rounded-full bg-oliva text-offwhite flex items-center justify-center shrink-0">
-                            <i class="fa-solid fa-play"></i>
-                        </div>
-                        <div>
-                            <span class="text-xs text-oliva font-semibold">Mensagem • Vídeo</span>
-                            <h4 class="font-serif font-bold text-cafe">Construindo um Lar com Sabedoria</h4>
-                        </div>
-                    </div>
-                    <button onclick="showNotification('Em Breve', 'Este vídeo estará disponível para reprodução na próxima atualização.', 'info')" class="text-xs font-semibold text-oliva hover:underline shrink-0">
-                        Assistir
-                    </button>
-                </div>
+            <div id="grid-midias" class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <p class="md:col-span-2 text-center text-sm text-cafe/50">Carregando mensagens…</p>
             </div>
         </div>
     </section>
@@ -343,7 +220,7 @@
         <div class="bg-offwhite w-full max-w-md rounded-2xl shadow-2xl border border-salvia/30 overflow-hidden transform transition-all">
             <!-- Modal Header -->
             <div class="bg-oliva text-offwhite px-6 py-4 flex items-center justify-between">
-                <h3 class="font-serif font-bold text-lg">Baixar Devocional Gratuito</h3>
+                <h3 id="modal-devocional-titulo" class="font-serif font-bold text-lg">Baixar Devocional Gratuito</h3>
                 <button onclick="closeModal('devocional-modal')" class="text-offwhite/80 hover:text-offwhite text-lg p-1">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -384,9 +261,21 @@
     <!-- JavaScript Logic & API Integration -->
     <script>
         // =========================================================================
-        // URL DO SEU BACKEND (APPS SCRIPT) ATUALIZADA
+        // URL do backend que recebe os formulários (devocional + newsletter)
+        // — este é o backend ORIGINAL da Kerllen, sem alteração.
         // =========================================================================
         const API_URL = "https://script.google.com/macros/s/AKfycbw7_I5K4iSZStRcawhrqmo7kiLcMlonbrY1s-FBKZwV1BbHkLL91WPgF7exnAnzx_Cz/exec";
+
+        // URL do backend do PAINEL ADMINISTRATIVO (publicado à parte, mesma
+        // planilha) — usado aqui só para LEITURA pública de conteúdo
+        // (Devocionais/Livros/Mídias/Configurações), sem senha nenhuma.
+        const API_URL_PAINEL = "https://script.google.com/macros/s/AKfycbxFE10E5VzbLBKl116ZhvBRDXCqEmoztSbCapIZD2D4zTYosc4uFT4YFXcIk1Ai8IoUMg/exec";
+
+        function esc(v) {
+            return String(v === undefined || v === null ? '' : v)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
 
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
@@ -430,14 +319,25 @@
             }, 4000);
         }
 
+        // Qual devocional está sendo baixado no momento (definido ao abrir o
+        // modal a partir de um card específico; o botão genérico do topo usa
+        // o devocional em destaque, sem link de PDF específico).
+        let devocionalSelecionado = { titulo: 'Devocional Gratuito', linkPdf: '' };
+
+        function abrirModalDevocional(titulo, linkPdf) {
+            devocionalSelecionado = { titulo: titulo || 'Devocional Gratuito', linkPdf: linkPdf || '' };
+            document.getElementById('modal-devocional-titulo').innerText = 'Baixar: ' + devocionalSelecionado.titulo;
+            openModal('devocional-modal');
+        }
+
         async function handleDownload(e) {
             e.preventDefault();
-            
+
             const nome = document.getElementById('lead-nome').value;
             const email = document.getElementById('lead-email').value;
             const btn = document.getElementById('btn-download');
             const originalContent = btn.innerHTML;
-            
+
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
             btn.disabled = true;
 
@@ -445,7 +345,7 @@
                 action: "salvarLeadDevocional",
                 nome: nome,
                 email: email,
-                nome_devocional: "Renovadas na Palavra"
+                nome_devocional: devocionalSelecionado.titulo
             };
 
             try {
@@ -454,13 +354,16 @@
                     body: JSON.stringify(payload),
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (result.status === "success") {
                     closeModal('devocional-modal');
                     showNotification('Sucesso!', 'Cadastro realizado com sucesso! O download foi iniciado.', 'success');
                     e.target.reset();
+                    if (devocionalSelecionado.linkPdf) {
+                        window.open(devocionalSelecionado.linkPdf, '_blank');
+                    }
                 } else {
                     showNotification('Ops!', 'Houve um erro no servidor. Tente novamente.', 'error');
                 }
@@ -515,6 +418,161 @@
         function buyBookModal(title) {
             showNotification('Livro Selecionado', `Você demonstrou interesse em "${title}". Em breve o link de compra estará ativo.`, 'info');
         }
+
+        // =========================================================================
+        // Conteúdo dinâmico: Devocionais / Livros / Mídias / Configurações,
+        // lidos da planilha através do backend do painel administrativo
+        // (só leitura pública, sem senha — nunca traz rascunhos, só itens
+        // com status "Publicado").
+        // =========================================================================
+
+        async function buscarPainel(action) {
+            const resp = await fetch(`${API_URL_PAINEL}?action=${action}`);
+            return await resp.json();
+        }
+
+        function youtubeEmbedUrl(link) {
+            if (!link) return null;
+            const m = link.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{6,})/);
+            return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+        }
+
+        function imagemOuIcone(url, icone, classesIcone) {
+            if (url) {
+                return `<img src="${esc(url)}" alt="" class="w-full h-full object-cover" onerror="this.replaceWith(Object.assign(document.createElement('div'), {innerHTML: '<i class=\\'fa-solid ${icone} ${classesIcone}\\'></i>', className: 'flex items-center justify-center w-full h-full'}))">`;
+            }
+            return `<i class="fa-solid ${icone} ${classesIcone}"></i>`;
+        }
+
+        async function carregarConfiguracoesPublicas() {
+            try {
+                const r = await buscarPainel('getConfiguracoesPublicas');
+                if (!r.success) return;
+                const cfg = r.data || {};
+                if (cfg.aviso_topo_texto) document.getElementById('topo-aviso').innerText = cfg.aviso_topo_texto;
+                if (cfg.versiculo_diario_texto) document.getElementById('versiculo-texto').innerText = '"' + cfg.versiculo_diario_texto + '"';
+                if (cfg.versiculo_diario_ref) document.getElementById('versiculo-ref').innerText = cfg.versiculo_diario_ref;
+                if (cfg.imagem_hero_url) {
+                    const hero = document.getElementById('hero-section');
+                    hero.style.backgroundImage = `url('${cfg.imagem_hero_url.replace(/'/g, "%27")}')`;
+                    document.getElementById('hero-overlay').classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error('Não foi possível carregar configurações do site:', err);
+            }
+        }
+
+        async function carregarDevocionaisPublicos() {
+            const grid = document.getElementById('grid-devocionais');
+            try {
+                const r = await buscarPainel('getDevocionaisPublicados');
+                if (!r.success || !r.data || r.data.length === 0) {
+                    grid.innerHTML = '<p class="md:col-span-3 text-center text-sm text-cafe/50">Novos devocionais em breve.</p>';
+                    return;
+                }
+                grid.innerHTML = r.data.map(d => `
+                    <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="h-48 bg-salvia/20 flex items-center justify-center relative overflow-hidden">
+                                ${imagemOuIcone(d.Imagem_Url, 'fa-seedling', 'text-4xl text-oliva/60')}
+                            </div>
+                            <div class="p-6 space-y-3">
+                                <div class="flex items-center gap-2 text-xs text-oliva font-semibold">
+                                    <i class="fa-regular fa-clock"></i> ${esc(d.Tempo_Leitura_Min || '?')} min de leitura
+                                </div>
+                                <h3 class="font-serif text-xl font-bold text-cafe">${esc(d.Titulo)}</h3>
+                                <p class="text-sm text-cafe/70 line-clamp-3">${esc(d.Resumo || '')}</p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0">
+                            <button onclick="abrirModalDevocional('${esc(d.Titulo).replace(/'/g, "\\'")}', '${esc(d.Link_PDF || '').replace(/'/g, "\\'")}')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
+                                Baixar PDF Completo
+                            </button>
+                        </div>
+                    </div>`).join('');
+            } catch (err) {
+                grid.innerHTML = '<p class="md:col-span-3 text-center text-sm text-red-400">Não foi possível carregar os devocionais agora.</p>';
+            }
+        }
+
+        async function carregarLivrosPublicos() {
+            const grid = document.getElementById('grid-livros');
+            try {
+                const r = await buscarPainel('getLivrosPublicados');
+                if (!r.success || !r.data || r.data.length === 0) {
+                    grid.innerHTML = '<p class="md:col-span-2 text-center text-sm text-cafe/50">Novos livros em breve.</p>';
+                    return;
+                }
+                grid.innerHTML = r.data.map(l => `
+                    <div class="bg-white p-6 rounded-2xl border border-salvia/30 shadow-sm flex flex-col sm:flex-row gap-6 items-center">
+                        <div class="w-36 h-48 bg-oliva/10 rounded-lg flex items-center justify-center shrink-0 border border-salvia/30 overflow-hidden">
+                            ${imagemOuIcone(l.Imagem_Url, 'fa-book', 'text-5xl text-oliva')}
+                        </div>
+                        <div class="space-y-3 text-center sm:text-left">
+                            ${l.Selo_Destaque ? `<span class="text-xs font-semibold bg-dourado/20 text-cafe px-2.5 py-1 rounded-full">${esc(l.Selo_Destaque)}</span>` : ''}
+                            <h3 class="font-serif text-xl font-bold text-cafe">${esc(l.Titulo)}</h3>
+                            <p class="text-sm text-cafe/70">${esc(l.Descricao || '')}</p>
+                            ${l.Preco ? `<p class="text-sm font-semibold text-oliva">${esc(l.Preco)}</p>` : ''}
+                            <div class="pt-2 flex flex-wrap gap-2 justify-center sm:justify-start">
+                                ${l.Link_Pagamento
+                                    ? `<a href="${esc(l.Link_Pagamento)}" target="_blank" rel="noopener" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm inline-block">Adquirir Livro</a>`
+                                    : `<button onclick="buyBookModal('${esc(l.Titulo).replace(/'/g, "\\'")}')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm">Tenho Interesse</button>`}
+                                ${l.Link_Amostra ? `<a href="${esc(l.Link_Amostra)}" target="_blank" rel="noopener" class="border border-oliva/40 text-cafe px-6 py-2.5 rounded-full text-sm font-medium inline-block">Ver Amostra</a>` : ''}
+                            </div>
+                        </div>
+                    </div>`).join('');
+            } catch (err) {
+                grid.innerHTML = '<p class="md:col-span-2 text-center text-sm text-red-400">Não foi possível carregar os livros agora.</p>';
+            }
+        }
+
+        async function carregarMidiasPublicas() {
+            const grid = document.getElementById('grid-midias');
+            try {
+                const r = await buscarPainel('getMidiasPublicadas');
+                if (!r.success || !r.data || r.data.length === 0) {
+                    grid.innerHTML = '<p class="md:col-span-2 text-center text-sm text-cafe/50">Novas mensagens em breve.</p>';
+                    return;
+                }
+                grid.innerHTML = r.data.map(m => {
+                    const embed = youtubeEmbedUrl(m.Link_Arquivo_Url);
+                    if (embed) {
+                        return `
+                        <div class="bg-offwhite p-4 rounded-xl border border-salvia/30 space-y-3">
+                            <div class="aspect-video rounded-lg overflow-hidden bg-black">
+                                <iframe class="w-full h-full" src="${embed}" title="${esc(m.Titulo)}" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                            </div>
+                            <div>
+                                <span class="text-xs text-oliva font-semibold">${esc(m.Tipo_Midia || 'Vídeo')}${m.Categoria_Selo ? ' • ' + esc(m.Categoria_Selo) : ''}</span>
+                                <h4 class="font-serif font-bold text-cafe">${esc(m.Titulo)}</h4>
+                            </div>
+                        </div>`;
+                    }
+                    return `
+                        <div class="bg-offwhite p-6 rounded-xl border border-salvia/30 flex items-center justify-between gap-4">
+                            <div class="flex items-center gap-4 min-w-0">
+                                <div class="w-12 h-12 rounded-full bg-oliva text-offwhite flex items-center justify-center shrink-0 overflow-hidden">
+                                    ${m.Imagem_Url ? imagemOuIcone(m.Imagem_Url, 'fa-play', 'text-sm') : '<i class="fa-solid fa-play"></i>'}
+                                </div>
+                                <div class="min-w-0">
+                                    <span class="text-xs text-oliva font-semibold">${esc(m.Tipo_Midia || 'Mensagem')}${m.Duracao ? ' • ' + esc(m.Duracao) : ''}</span>
+                                    <h4 class="font-serif font-bold text-cafe truncate">${esc(m.Titulo)}</h4>
+                                </div>
+                            </div>
+                            ${m.Link_Arquivo_Url
+                                ? `<a href="${esc(m.Link_Arquivo_Url)}" target="_blank" rel="noopener" class="text-xs font-semibold text-oliva hover:underline shrink-0">Ouvir / Assistir</a>`
+                                : `<button onclick="showNotification('Em Breve', 'Este conteúdo estará disponível em breve.', 'info')" class="text-xs font-semibold text-oliva hover:underline shrink-0">Em breve</button>`}
+                        </div>`;
+                }).join('');
+            } catch (err) {
+                grid.innerHTML = '<p class="md:col-span-2 text-center text-sm text-red-400">Não foi possível carregar as mensagens agora.</p>';
+            }
+        }
+
+        carregarConfiguracoesPublicas();
+        carregarDevocionaisPublicos();
+        carregarLivrosPublicos();
+        carregarMidiasPublicas();
     </script>
 </body>
 </html>

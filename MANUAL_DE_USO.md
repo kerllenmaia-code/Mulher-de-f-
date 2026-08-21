@@ -29,9 +29,30 @@ Não é preciso fazer nada para os dados chegarem lá — é automático assim q
 
 Abra o site, preencha um cadastro de teste (pode usar um nome como "TESTE" para não confundir com um contato de verdade) e depois abra a planilha na aba correspondente — a linha nova deve aparecer em poucos segundos. Depois, é só apagar essa linha de teste na planilha (clique com o botão direito no número da linha → Excluir linha).
 
-## O que ainda não está pronto
+## Painel Administrativo — gerenciando o conteúdo do site
 
-As seções "Devocionais em Destaque", "Livros Publicados" e "Mensagens em Áudio e Vídeo" mostram sempre o mesmo conteúdo fixo — mesmo que a planilha tenha abas próprias para cadastrar esse conteúdo (`Conteudo_Devocionais`, `Conteudo_Livros`, `Conteudo_Midias`), o site ainda não lê essas abas. Ou seja: hoje, para trocar os textos dessas seções, é preciso editar o arquivo `index.html` diretamente (ou pedir ajuda para isso) — preencher essas abas da planilha, por enquanto, não muda nada no site.
+Agora existe uma tela própria para a Kerllen cadastrar e editar o conteúdo do site sem precisar mexer na planilha:
+
+**https://kerllenmaia-code.github.io/Mulher-de-f-/admin.html**
+
+### Primeiro acesso
+
+1. Abra o endereço acima.
+2. Digite a **senha provisória** (o Luciano vai te passar essa senha por fora, não fica escrita em nenhum lugar público).
+3. O painel vai pedir para você **criar sua própria senha** (mínimo 6 caracteres, digitada duas vezes para confirmar). Depois disso a senha provisória para de funcionar — só a nova senha que você escolheu abre o painel dali em diante.
+4. Guarde essa senha nova em lugar seguro (ela fica salva no Google, não em nenhum arquivo do site — se esquecer, peça para o Luciano resetar).
+
+### O que dá para fazer no painel
+
+- **Devocionais**, **Livros** e **Mídias**: clique em "Novo" para cadastrar, ou "Editar"/"Remover" num item já existente. Cada um tem um campo para colar o **link** (PDF do devocional, link de compra do livro, link do vídeo/áudio) e um campo para colar a **URL de uma imagem** (capa, banner do card). Todo item tem um status: "Rascunho" (não aparece no site) ou "Publicado" (aparece).
+- **Leads (Devocional)** e **Newsletter**: são só para consulta — mostra quem se cadastrou pelo site, não dá para editar por aqui.
+- **Configurações do Site**: o texto e a referência do "Versículo do Dia", o aviso da barra verde do topo, e a imagem de banner que aparece atrás do título principal do site.
+
+Assim que você salva algo como "Publicado" no painel, ele aparece no site público em poucos segundos (só recarregar a página).
+
+### Dica sobre imagens
+
+O painel não recebe upload de arquivo — você precisa colar o **endereço (URL)** de uma imagem que já esteja hospedada em algum lugar (por exemplo, uma imagem do Google Drive com link público, ou de qualquer site de imagens). Se não tiver uma imagem, pode deixar o campo em branco — o site mostra um ícone no lugar.
 
 ## Se algo parar de funcionar
 
@@ -43,3 +64,5 @@ Este site coleta nome e e-mail de quem visita. Como o link que recebe esses dado
 
 - Só divulgar amplamente quando já existir uma política de privacidade simples explicando o que é feito com o e-mail;
 - Evitar deixar o link circulando "à toa" sem necessidade, para reduzir spam nos formulários.
+
+A tela de leads/newsletter dentro do painel administrativo também mostra nome e e-mail de pessoas reais — por isso o painel pede senha. Não compartilhe a senha do painel com quem não precisa ver essa lista.

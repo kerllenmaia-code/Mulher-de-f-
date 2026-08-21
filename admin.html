@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo | Mulher de Fé</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        oliva: '#5C6F52',
+                        'oliva-dark': '#485741',
+                        salvia: '#A3B19B',
+                        cafe: '#3A3930',
+                        offwhite: '#F8F5EF',
+                        dourado: '#C5A880'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-offwhite text-cafe font-sans antialiased">
+
+    <!-- Tela de senha -->
+    <div id="tela-login" class="min-h-screen flex items-center justify-center px-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl border border-salvia/30 p-8 space-y-5">
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-full bg-oliva text-offwhite flex items-center justify-center mx-auto text-xl font-serif font-bold">M</div>
+                <h1 class="font-serif text-xl font-bold text-cafe">Painel Administrativo</h1>
+                <p class="text-xs text-cafe/60">Mulher de Fé — acesso restrito</p>
+            </div>
+            <form id="form-login" class="space-y-3">
+                <input type="password" id="campo-senha" required placeholder="Senha do painel"
+                       class="w-full px-4 py-3 rounded-lg border border-salvia/50 bg-white text-sm focus:outline-none focus:border-dourado focus:ring-1 focus:ring-dourado">
+                <button type="submit" id="btn-entrar" class="w-full bg-oliva hover:bg-oliva-dark text-offwhite py-3 rounded-lg font-medium transition-all">Entrar</button>
+                <p id="erro-login" class="text-xs text-red-500 text-center hidden">Senha incorreta.</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tela de troca de senha obrigatória (primeiro acesso) -->
+    <div id="tela-troca-senha" class="hidden min-h-screen items-center justify-center px-4">
+        <div class="bg-white w-full max-w-sm rounded-2xl shadow-xl border border-salvia/30 p-8 space-y-5">
+            <div class="text-center space-y-2">
+                <div class="w-14 h-14 rounded-full bg-dourado text-offwhite flex items-center justify-center mx-auto text-xl"><i class="fa-solid fa-key"></i></div>
+                <h1 class="font-serif text-xl font-bold text-cafe">Defina sua senha</h1>
+                <p class="text-xs text-cafe/60">Este é o primeiro acesso — troque a senha provisória antes de continuar.</p>
+            </div>
+            <form id="form-troca-senha" class="space-y-3">
+                <div>
+                    <label class="campo-label">Nova senha (mínimo 6 caracteres)</label>
+                    <input type="password" id="campo-nova-senha" required minlength="6" class="campo-input">
+                </div>
+                <div>
+                    <label class="campo-label">Confirme a nova senha</label>
+                    <input type="password" id="campo-confirma-senha" required minlength="6" class="campo-input">
+                </div>
+                <button type="submit" class="w-full bg-oliva hover:bg-oliva-dark text-offwhite py-3 rounded-lg font-medium transition-all">Definir senha e entrar</button>
+                <p id="erro-troca" class="text-xs text-red-500 text-center hidden"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Painel (só aparece após login) -->
+    <div id="painel" class="hidden">
+        <header class="sticky top-0 z-40 bg-offwhite/95 backdrop-blur-md border-b border-salvia/30">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-oliva text-offwhite flex items-center justify-center font-serif font-bold text-sm">M</div>
+                    <span class="font-serif font-bold text-lg text-cafe">Painel Mulher de Fé</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="index.html" target="_blank" class="text-xs text-oliva hover:underline"><i class="fa-solid fa-arrow-up-right-from-square mr-1"></i>Ver site</a>
+                    <button onclick="sair()" class="text-xs font-semibold text-cafe/70 hover:text-cafe">Sair</button>
+                </div>
+            </div>
+            <nav class="max-w-6xl mx-auto px-4 sm:px-6 flex gap-1 overflow-x-auto pb-2">
+                <button data-aba="devocionais" class="btn-aba" onclick="mostrarAba('devocionais')">Devocionais</button>
+                <button data-aba="livros" class="btn-aba" onclick="mostrarAba('livros')">Livros</button>
+                <button data-aba="midias" class="btn-aba" onclick="mostrarAba('midias')">Mídias</button>
+                <button data-aba="leads" class="btn-aba" onclick="mostrarAba('leads')">Leads (Devocional)</button>
+                <button data-aba="newsletter" class="btn-aba" onclick="mostrarAba('newsletter')">Newsletter</button>
+                <button data-aba="config" class="btn-aba" onclick="mostrarAba('config')">Configurações do Site</button>
+            </nav>
+        </header>
+
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 space-y-6">
+
+            <!-- ===== DEVOCIONAIS ===== -->
+            <section id="aba-devocionais" class="aba-conteudo space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-serif text-2xl font-bold">Devocionais</h2>
+                    <button onclick="abrirForm('devocionais')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-4 py-2 rounded-full text-sm font-medium"><i class="fa-solid fa-plus mr-1"></i>Novo</button>
+                </div>
+                <div id="lista-devocionais" class="grid gap-3"></div>
+            </section>
+
+            <!-- ===== LIVROS ===== -->
+            <section id="aba-livros" class="aba-conteudo space-y-4 hidden">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-serif text-2xl font-bold">Livros</h2>
+                    <button onclick="abrirForm('livros')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-4 py-2 rounded-full text-sm font-medium"><i class="fa-solid fa-plus mr-1"></i>Novo</button>
+                </div>
+                <div id="lista-livros" class="grid gap-3"></div>
+            </section>
+
+            <!-- ===== MÍDIAS ===== -->
+            <section id="aba-midias" class="aba-conteudo space-y-4 hidden">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-serif text-2xl font-bold">Mídias</h2>
+                    <button onclick="abrirForm('midias')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-4 py-2 rounded-full text-sm font-medium"><i class="fa-solid fa-plus mr-1"></i>Novo</button>
+                </div>
+                <div id="lista-midias" class="grid gap-3"></div>
+            </section>
+
+            <!-- ===== LEADS (só leitura) ===== -->
+            <section id="aba-leads" class="aba-conteudo space-y-4 hidden">
+                <h2 class="font-serif text-2xl font-bold">Leads do Devocional Gratuito</h2>
+                <p class="text-xs text-cafe/60">Só leitura — quem baixou o devocional pelo site.</p>
+                <div class="overflow-x-auto bg-white rounded-xl border border-salvia/30">
+                    <table class="w-full text-sm">
+                        <thead class="bg-salvia/10 text-left text-xs uppercase text-cafe/60">
+                            <tr><th class="p-3">Data</th><th class="p-3">Nome</th><th class="p-3">E-mail</th><th class="p-3">Devocional</th></tr>
+                        </thead>
+                        <tbody id="tabela-leads"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ===== NEWSLETTER (só leitura) ===== -->
+            <section id="aba-newsletter" class="aba-conteudo space-y-4 hidden">
+                <h2 class="font-serif text-2xl font-bold">Assinantes da Newsletter</h2>
+                <p class="text-xs text-cafe/60">Só leitura.</p>
+                <div class="overflow-x-auto bg-white rounded-xl border border-salvia/30">
+                    <table class="w-full text-sm">
+                        <thead class="bg-salvia/10 text-left text-xs uppercase text-cafe/60">
+                            <tr><th class="p-3">Data</th><th class="p-3">E-mail</th><th class="p-3">Status</th></tr>
+                        </thead>
+                        <tbody id="tabela-newsletter"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- ===== CONFIGURAÇÕES DO SITE ===== -->
+            <section id="aba-config" class="aba-conteudo space-y-4 hidden">
+                <h2 class="font-serif text-2xl font-bold">Configurações do Site</h2>
+                <p class="text-xs text-cafe/60">Textos e imagem que aparecem no topo do site público. Muda aqui, atualiza lá.</p>
+                <form id="form-config" class="bg-white p-6 rounded-xl border border-salvia/30 space-y-4 max-w-xl">
+                    <div>
+                        <label class="campo-label">Imagem de banner do topo (URL da imagem)</label>
+                        <input type="text" name="imagem_hero_url" class="campo-input" placeholder="https://...">
+                        <p class="text-[11px] text-cafe/50 mt-1">Deixe em branco para manter o visual padrão (sem foto de fundo).</p>
+                    </div>
+                    <div>
+                        <label class="campo-label">Aviso da barra do topo</label>
+                        <input type="text" name="aviso_topo_texto" class="campo-input">
+                    </div>
+                    <div>
+                        <label class="campo-label">Versículo do dia (texto)</label>
+                        <textarea name="versiculo_diario_texto" class="campo-input" rows="2"></textarea>
+                    </div>
+                    <div>
+                        <label class="campo-label">Versículo do dia (referência)</label>
+                        <input type="text" name="versiculo_diario_ref" class="campo-input">
+                    </div>
+                    <button type="submit" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-3 rounded-lg font-medium">Salvar configurações</button>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal de formulário (Devocional/Livro/Mídia) -->
+    <div id="modal-form" class="fixed inset-0 z-50 hidden items-center justify-center bg-cafe/60 backdrop-blur-sm p-4">
+        <div class="bg-offwhite w-full max-w-lg rounded-2xl shadow-2xl border border-salvia/30 overflow-hidden max-h-[90vh] flex flex-col">
+            <div class="bg-oliva text-offwhite px-6 py-4 flex items-center justify-between shrink-0">
+                <h3 id="modal-titulo" class="font-serif font-bold text-lg">Novo item</h3>
+                <button onclick="fecharForm()" class="text-offwhite/80 hover:text-offwhite text-lg p-1"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="form-item" class="p-6 space-y-3 overflow-y-auto"></form>
+        </div>
+    </div>
+
+    <!-- Notificação -->
+    <div id="notification-box" class="fixed bottom-5 right-5 z-50 bg-cafe text-offwhite px-6 py-4 rounded-xl shadow-xl border border-salvia/40 transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm flex items-start gap-3">
+        <div id="notif-icon" class="text-salvia mt-0.5 text-lg"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="space-y-1">
+            <h5 id="notif-title" class="font-serif font-bold text-sm text-offwhite">Sucesso</h5>
+            <p id="notif-msg" class="text-xs text-offwhite/80">Mensagem de aviso aqui.</p>
+        </div>
+    </div>
+
+    <style>
+        .btn-aba { padding: 8px 14px; border-radius: 9999px; font-size: 13px; font-weight: 600; color: #3A3930B3; white-space: nowrap; }
+        .btn-aba.ativa { background: #5C6F52; color: #F8F5EF; }
+        .btn-aba:not(.ativa):hover { background: #A3B19B33; }
+        .campo-label { display:block; font-size:11px; font-weight:600; color:#3A3930B3; margin-bottom:4px; }
+        .campo-input { width:100%; padding:10px 14px; border-radius:8px; border:1px solid #A3B19B80; background:#fff; font-size:14px; }
+        .campo-input:focus { outline:none; border-color:#C5A880; box-shadow:0 0 0 1px #C5A880; }
+    </style>
+
+    <script>
+        // =========================================================================
+        // URL DO BACKEND DO PAINEL (Apps Script publicado pelo Luciano, vinculado
+        // à MESMA planilha "Banco de Dados Mulheres de Fé"). Este backend é
+        // diferente do que recebe os formulários públicos do site (index.html) —
+        // ele só cuida de conteúdo (Devocionais/Livros/Mídias) e leitura de leads.
+        // =========================================================================
+        const API_URL = "https://script.google.com/macros/s/AKfycbxFE10E5VzbLBKl116ZhvBRDXCqEmoztSbCapIZD2D4zTYosc4uFT4YFXcIk1Ai8IoUMg/exec";
+
+        // A senha NÃO fica mais fixa aqui no código — ela é conferida pelo
+        // próprio backend (que guarda a senha atual nas "Propriedades do
+        // Script", fora da planilha e fora deste arquivo). No primeiro
+        // acesso, a senha provisória combinada com a Kerllen só funciona
+        // uma vez: o backend obriga a troca antes de liberar o painel.
+        // Isto ainda é uma proteção SIMPLES (a senha viaja em texto puro na
+        // chamada à API) — serve para afastar curiosos, não é segurança de
+        // verdade para dados sensíveis.
+        let senhaAtual = sessionStorage.getItem('mdf_senha') || '';
+
+        function esc(v) {
+            return String(v === undefined || v === null ? '' : v)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function showNotification(title, message, type = 'success') {
+            const box = document.getElementById('notification-box');
+            document.getElementById('notif-title').innerText = title;
+            document.getElementById('notif-msg').innerText = message;
+            const iconEl = document.getElementById('notif-icon');
+            iconEl.innerHTML = type === 'success'
+                ? '<i class="fa-solid fa-circle-check text-salvia"></i>'
+                : type === 'error'
+                ? '<i class="fa-solid fa-circle-exclamation text-red-400"></i>'
+                : '<i class="fa-solid fa-circle-info text-dourado"></i>';
+            box.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => box.classList.add('translate-y-24', 'opacity-0'), 4000);
+        }
+
+        // ---------- Chamada à API (definida antes por causa da ordem de uso) ----------
+        async function chamarAPI(action, extra = {}) {
+            const payload = Object.assign({ action: action, senha: senhaAtual }, extra);
+            const resp = await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            });
+            return await resp.json();
+        }
+
+        // ---------- Login (verificado no servidor) ----------
+        document.getElementById('form-login').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const valor = document.getElementById('campo-senha').value;
+            const btn = document.getElementById('btn-entrar');
+            btn.disabled = true;
+            document.getElementById('erro-login').classList.add('hidden');
+            const senhaTentativa = senhaAtual;
+            senhaAtual = valor; // usado por chamarAPI() nesta chamada
+            try {
+                const r = await chamarAPI('verificarSenha');
+                if (!r.success) {
+                    senhaAtual = senhaTentativa;
+                    document.getElementById('erro-login').classList.remove('hidden');
+                    return;
+                }
+                sessionStorage.setItem('mdf_senha', valor);
+                if (r.trocaPendente) {
+                    document.getElementById('tela-login').classList.add('hidden');
+                    document.getElementById('tela-troca-senha').classList.remove('hidden');
+                    document.getElementById('tela-troca-senha').classList.add('flex');
+                } else {
+                    entrarNoPainel();
+                }
+            } catch (err) {
+                senhaAtual = senhaTentativa;
+                showNotification('Erro de conexão', 'Não foi possível falar com o backend.', 'error');
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+        // ---------- Troca de senha obrigatória (primeiro acesso) ----------
+        document.getElementById('form-troca-senha').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const nova = document.getElementById('campo-nova-senha').value;
+            const confirma = document.getElementById('campo-confirma-senha').value;
+            const erroEl = document.getElementById('erro-troca');
+            erroEl.classList.add('hidden');
+            if (nova !== confirma) {
+                erroEl.innerText = 'As senhas não são iguais.';
+                erroEl.classList.remove('hidden');
+                return;
+            }
+            const r = await chamarAPI('trocarSenha', { novaSenha: nova });
+            if (r.success) {
+                senhaAtual = nova;
+                sessionStorage.setItem('mdf_senha', nova);
+                document.getElementById('tela-troca-senha').classList.add('hidden');
+                document.getElementById('tela-troca-senha').classList.remove('flex');
+                entrarNoPainel();
+                showNotification('Senha definida', 'A partir de agora, use a nova senha para entrar.', 'success');
+            } else {
+                erroEl.innerText = r.error || 'Não foi possível trocar a senha.';
+                erroEl.classList.remove('hidden');
+            }
+        });
+
+        function entrarNoPainel() {
+            document.getElementById('tela-login').classList.add('hidden');
+            document.getElementById('tela-troca-senha').classList.add('hidden');
+            document.getElementById('painel').classList.remove('hidden');
+            mostrarAba('devocionais');
+        }
+
+        function sair() {
+            sessionStorage.removeItem('mdf_senha');
+            senhaAtual = '';
+            document.getElementById('painel').classList.add('hidden');
+            document.getElementById('tela-login').classList.remove('hidden');
+        }
+
+        // Se já tem senha guardada nesta sessão do navegador, confirma com o
+        // servidor antes de liberar (evita entrar com senha antiga trocada
+        // em outro dispositivo).
+        if (senhaAtual) {
+            chamarAPI('verificarSenha').then(function (r) {
+                if (r.success && !r.trocaPendente) entrarNoPainel();
+                else { sessionStorage.removeItem('mdf_senha'); senhaAtual = ''; }
+            }).catch(function () { /* backend fora do ar: mostra tela de login normalmente */ });
+        }
+
+        // ---------- Abas ----------
+        const carregadores = {
+            devocionais: carregarDevocionais,
+            livros: carregarLivros,
+            midias: carregarMidias,
+            leads: carregarLeads,
+            newsletter: carregarNewsletter,
+            config: carregarConfig
+        };
+        const abasJaCarregadas = {};
+
+        function mostrarAba(nome) {
+            document.querySelectorAll('.aba-conteudo').forEach(el => el.classList.add('hidden'));
+            document.getElementById('aba-' + nome).classList.remove('hidden');
+            document.querySelectorAll('.btn-aba').forEach(b => b.classList.toggle('ativa', b.dataset.aba === nome));
+            if (!abasJaCarregadas[nome]) {
+                abasJaCarregadas[nome] = true;
+                carregadores[nome]();
+            }
+        }
+
+        function recarregarAbaAtual() {
+            const ativa = document.querySelector('.btn-aba.ativa');
+            if (ativa) { abasJaCarregadas[ativa.dataset.aba] = false; mostrarAba(ativa.dataset.aba); }
+        }
+
+        // ---------- DEVOCIONAIS ----------
+        async function carregarDevocionais() {
+            const container = document.getElementById('lista-devocionais');
+            container.innerHTML = '<p class="text-sm text-cafe/50">Carregando…</p>';
+            const r = await chamarAPI('listarDevocionais');
+            if (!r.success) { container.innerHTML = erroHtml(r.error); return; }
+            const itens = r.data.filter(d => d.Status_Publicacao !== 'Removido');
+            if (itens.length === 0) { container.innerHTML = vazioHtml(); return; }
+            container.innerHTML = itens.map(d => `
+                <div class="bg-white p-4 rounded-xl border border-salvia/30 flex items-start justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            ${selo(d.Status_Publicacao)}
+                            <span class="text-xs text-cafe/50">${esc(d.Categoria || '')} · ${esc(d.Tempo_Leitura_Min || '?')} min</span>
+                        </div>
+                        <h4 class="font-serif font-bold text-cafe">${esc(d.Titulo)}</h4>
+                        <p class="text-xs text-cafe/60 line-clamp-2">${esc(d.Resumo || '')}</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <button class="text-xs text-oliva hover:underline" data-tipo="devocionais" data-id="${esc(d.ID)}" onclick="editarItem(this)">Editar</button>
+                        <button class="text-xs text-red-500 hover:underline" data-tipo="devocionais" data-id="${esc(d.ID)}" onclick="removerItem(this)">Remover</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        // ---------- LIVROS ----------
+        async function carregarLivros() {
+            const container = document.getElementById('lista-livros');
+            container.innerHTML = '<p class="text-sm text-cafe/50">Carregando…</p>';
+            const r = await chamarAPI('listarLivros');
+            if (!r.success) { container.innerHTML = erroHtml(r.error); return; }
+            const itens = r.data.filter(d => d.Status !== 'Removido');
+            if (itens.length === 0) { container.innerHTML = vazioHtml(); return; }
+            container.innerHTML = itens.map(d => `
+                <div class="bg-white p-4 rounded-xl border border-salvia/30 flex items-start justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">${selo(d.Status)}<span class="text-xs text-cafe/50">${esc(d.Selo_Destaque || '')}</span></div>
+                        <h4 class="font-serif font-bold text-cafe">${esc(d.Titulo)}</h4>
+                        <p class="text-xs text-cafe/60 line-clamp-2">${esc(d.Descricao || '')} — ${esc(d.Preco || '')}</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <button class="text-xs text-oliva hover:underline" data-tipo="livros" data-id="${esc(d.ID)}" onclick="editarItem(this)">Editar</button>
+                        <button class="text-xs text-red-500 hover:underline" data-tipo="livros" data-id="${esc(d.ID)}" onclick="removerItem(this)">Remover</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        // ---------- MÍDIAS ----------
+        async function carregarMidias() {
+            const container = document.getElementById('lista-midias');
+            container.innerHTML = '<p class="text-sm text-cafe/50">Carregando…</p>';
+            const r = await chamarAPI('listarMidias');
+            if (!r.success) { container.innerHTML = erroHtml(r.error); return; }
+            const itens = r.data.filter(d => d.Status !== 'Removido');
+            if (itens.length === 0) { container.innerHTML = vazioHtml(); return; }
+            container.innerHTML = itens.map(d => `
+                <div class="bg-white p-4 rounded-xl border border-salvia/30 flex items-start justify-between gap-4">
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">${selo(d.Status)}<span class="text-xs text-cafe/50">${esc(d.Tipo_Midia || '')} · ${esc(d.Categoria_Selo || '')}</span></div>
+                        <h4 class="font-serif font-bold text-cafe">${esc(d.Titulo)}</h4>
+                        <p class="text-xs text-cafe/60 line-clamp-2">${esc(d.Descricao || '')}</p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <button class="text-xs text-oliva hover:underline" data-tipo="midias" data-id="${esc(d.ID)}" onclick="editarItem(this)">Editar</button>
+                        <button class="text-xs text-red-500 hover:underline" data-tipo="midias" data-id="${esc(d.ID)}" onclick="removerItem(this)">Remover</button>
+                    </div>
+                </div>`).join('');
+        }
+
+        // ---------- LEADS / NEWSLETTER (só leitura) ----------
+        async function carregarLeads() {
+            const tbody = document.getElementById('tabela-leads');
+            tbody.innerHTML = '<tr><td class="p-3 text-cafe/50" colspan="4">Carregando…</td></tr>';
+            const r = await chamarAPI('listarLeads');
+            if (!r.success) { tbody.innerHTML = `<tr><td class="p-3 text-red-500" colspan="4">${esc(r.error)}</td></tr>`; return; }
+            if (r.data.length === 0) { tbody.innerHTML = '<tr><td class="p-3 text-cafe/50" colspan="4">Nenhum registro ainda.</td></tr>'; return; }
+            tbody.innerHTML = r.data.map(l => `
+                <tr class="border-t border-salvia/20">
+                    <td class="p-3 text-xs">${esc(l.Data_Hora)}</td>
+                    <td class="p-3">${esc(l.Nome)}</td>
+                    <td class="p-3">${esc(l.Email)}</td>
+                    <td class="p-3 text-xs">${esc(l.Nome_Devocional_Baixado)}</td>
+                </tr>`).join('');
+        }
+
+        async function carregarNewsletter() {
+            const tbody = document.getElementById('tabela-newsletter');
+            tbody.innerHTML = '<tr><td class="p-3 text-cafe/50" colspan="3">Carregando…</td></tr>';
+            const r = await chamarAPI('listarNewsletter');
+            if (!r.success) { tbody.innerHTML = `<tr><td class="p-3 text-red-500" colspan="3">${esc(r.error)}</td></tr>`; return; }
+            if (r.data.length === 0) { tbody.innerHTML = '<tr><td class="p-3 text-cafe/50" colspan="3">Nenhum registro ainda.</td></tr>'; return; }
+            tbody.innerHTML = r.data.map(n => `
+                <tr class="border-t border-salvia/20">
+                    <td class="p-3 text-xs">${esc(n.Data_Hora)}</td>
+                    <td class="p-3">${esc(n.Email)}</td>
+                    <td class="p-3 text-xs">${esc(n.Status_Inscricao)}</td>
+                </tr>`).join('');
+        }
+
+        // ---------- CONFIGURAÇÕES DO SITE ----------
+        async function carregarConfig() {
+            const r = await chamarAPI('listarConfiguracoes');
+            if (!r.success) { showNotification('Erro', r.error || 'Não foi possível carregar', 'error'); return; }
+            const mapa = {};
+            r.data.forEach(l => { mapa[l.Chave] = l.Valor; });
+            const form = document.getElementById('form-config');
+            ['imagem_hero_url', 'aviso_topo_texto', 'versiculo_diario_texto', 'versiculo_diario_ref'].forEach(chave => {
+                const campo = form.elements[chave];
+                if (campo) campo.value = mapa[chave] || '';
+            });
+        }
+
+        document.getElementById('form-config').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const btn = e.target.querySelector('button[type=submit]');
+            btn.disabled = true;
+            const original = btn.innerText;
+            btn.innerText = 'Salvando…';
+            try {
+                for (const [chave, valor] of fd.entries()) {
+                    const r = await chamarAPI('updateConfiguracao', { chave: chave, valor: valor });
+                    if (!r.success) throw new Error(r.error || ('Falha ao salvar ' + chave));
+                }
+                showNotification('Sucesso', 'Configurações salvas! Recarregue o site para ver.', 'success');
+            } catch (err) {
+                showNotification('Erro', err.message, 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = original;
+            }
+        });
+
+        function selo(status) {
+            const s = status || 'Rascunho';
+            const cor = s === 'Publicado' ? 'bg-oliva text-offwhite' : 'bg-salvia/30 text-cafe';
+            return `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${cor}">${esc(s)}</span>`;
+        }
+        function erroHtml(msg) { return `<p class="text-sm text-red-500">Erro: ${esc(msg)}</p>`; }
+        function vazioHtml() { return '<p class="text-sm text-cafe/50">Nenhum item cadastrado ainda.</p>'; }
+
+        // ---------- Formulário (Novo/Editar) ----------
+        const CAMPOS = {
+            devocionais: [
+                { campo: 'titulo', label: 'Título', tipo: 'text', obrig: true },
+                { campo: 'categoria', label: 'Categoria', tipo: 'text' },
+                { campo: 'tempoLeituraMin', label: 'Tempo de leitura (min)', tipo: 'number' },
+                { campo: 'resumo', label: 'Resumo (aparece no card)', tipo: 'textarea' },
+                { campo: 'conteudoHtml', label: 'Conteúdo completo (opcional)', tipo: 'textarea' },
+                { campo: 'linkPdf', label: 'Link do PDF do devocional', tipo: 'text' },
+                { campo: 'imagemUrl', label: 'Imagem do card (URL)', tipo: 'text' },
+                { campo: 'status', label: 'Status', tipo: 'select', opcoes: ['Rascunho', 'Publicado'] }
+            ],
+            livros: [
+                { campo: 'titulo', label: 'Título', tipo: 'text', obrig: true },
+                { campo: 'subtitulo', label: 'Subtítulo', tipo: 'text' },
+                { campo: 'seloDestaque', label: 'Selo de destaque (ex.: Bestseller)', tipo: 'text' },
+                { campo: 'descricao', label: 'Descrição', tipo: 'textarea' },
+                { campo: 'preco', label: 'Preço', tipo: 'text' },
+                { campo: 'linkPagamento', label: 'Link de pagamento/compra', tipo: 'text' },
+                { campo: 'linkAmostra', label: 'Link de amostra', tipo: 'text' },
+                { campo: 'imagemUrl', label: 'Capa do livro (URL da imagem)', tipo: 'text' },
+                { campo: 'status', label: 'Status', tipo: 'select', opcoes: ['Rascunho', 'Publicado'] }
+            ],
+            midias: [
+                { campo: 'titulo', label: 'Título', tipo: 'text', obrig: true },
+                { campo: 'tipoMidia', label: 'Tipo (Podcast / Vídeo)', tipo: 'text' },
+                { campo: 'categoriaSelo', label: 'Categoria / selo', tipo: 'text' },
+                { campo: 'duracao', label: 'Duração', tipo: 'text' },
+                { campo: 'descricao', label: 'Descrição', tipo: 'textarea' },
+                { campo: 'linkArquivoUrl', label: 'Link do vídeo/áudio (ex.: YouTube)', tipo: 'text' },
+                { campo: 'imagemUrl', label: 'Imagem de capa (URL) — opcional se for vídeo do YouTube', tipo: 'text' },
+                { campo: 'status', label: 'Status', tipo: 'select', opcoes: ['Rascunho', 'Publicado'] }
+            ]
+        };
+        const CAMPO_ORIGEM = {
+            devocionais: { titulo: 'Titulo', categoria: 'Categoria', tempoLeituraMin: 'Tempo_Leitura_Min', resumo: 'Resumo', conteudoHtml: 'Conteudo_Completo_HTML', linkPdf: 'Link_PDF', imagemUrl: 'Imagem_Url', status: 'Status_Publicacao' },
+            livros: { titulo: 'Titulo', subtitulo: 'Subtitulo', seloDestaque: 'Selo_Destaque', descricao: 'Descricao', preco: 'Preco', linkPagamento: 'Link_Pagamento', linkAmostra: 'Link_Amostra', imagemUrl: 'Imagem_Url', status: 'Status' },
+            midias: { titulo: 'Titulo', tipoMidia: 'Tipo_Midia', categoriaSelo: 'Categoria_Selo', duracao: 'Duracao', descricao: 'Descricao', linkArquivoUrl: 'Link_Arquivo_Url', imagemUrl: 'Imagem_Url', status: 'Status' }
+        };
+        let itemEditandoId = null;
+        let tipoAtual = null;
+
+        function abrirForm(tipo, dadosOrigem) {
+            tipoAtual = tipo;
+            itemEditandoId = dadosOrigem ? dadosOrigem.ID : null;
+            document.getElementById('modal-titulo').innerText = dadosOrigem ? 'Editar item' : 'Novo item';
+            const form = document.getElementById('form-item');
+            const mapa = CAMPO_ORIGEM[tipo];
+            form.innerHTML = CAMPOS[tipo].map(c => {
+                const valorAtual = dadosOrigem ? (dadosOrigem[mapa[c.campo]] ?? '') : (c.campo === 'status' ? 'Rascunho' : '');
+                if (c.tipo === 'textarea') {
+                    return `<div><label class="campo-label">${c.label}</label><textarea name="${c.campo}" class="campo-input" rows="3">${esc(valorAtual)}</textarea></div>`;
+                }
+                if (c.tipo === 'select') {
+                    return `<div><label class="campo-label">${c.label}</label><select name="${c.campo}" class="campo-input">${c.opcoes.map(o => `<option value="${o}" ${o === valorAtual ? 'selected' : ''}>${o}</option>`).join('')}</select></div>`;
+                }
+                return `<div><label class="campo-label">${c.label}</label><input type="${c.tipo}" name="${c.campo}" value="${esc(valorAtual)}" class="campo-input" ${c.obrig ? 'required' : ''}></div>`;
+            }).join('') + `<button type="submit" class="w-full bg-oliva hover:bg-oliva-dark text-offwhite py-3 rounded-lg font-medium mt-2">Salvar</button>`;
+
+            document.getElementById('modal-form').classList.remove('hidden');
+            document.getElementById('modal-form').classList.add('flex');
+        }
+
+        function fecharForm() {
+            document.getElementById('modal-form').classList.add('hidden');
+            document.getElementById('modal-form').classList.remove('flex');
+        }
+
+        function editarItem(btn) {
+            const tipo = btn.dataset.tipo, id = btn.dataset.id;
+            chamarAPI(tipo === 'devocionais' ? 'listarDevocionais' : tipo === 'livros' ? 'listarLivros' : 'listarMidias')
+                .then(r => {
+                    const item = r.data.find(d => String(d.ID) === String(id));
+                    if (item) abrirForm(tipo, item);
+                });
+        }
+
+        async function removerItem(btn) {
+            if (!confirm('Remover este item? Ele deixa de aparecer no site (não é apagado da planilha).')) return;
+            const tipo = btn.dataset.tipo, id = btn.dataset.id;
+            const action = tipo === 'devocionais' ? 'deleteDevocional' : tipo === 'livros' ? 'deleteLivro' : 'deleteMidia';
+            const r = await chamarAPI(action, { id: id });
+            if (r.success) { showNotification('Removido', 'Item removido do site.', 'success'); recarregarAbaAtual(); }
+            else { showNotification('Erro', r.error || 'Não foi possível remover.', 'error'); }
+        }
+
+        document.getElementById('form-item').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            const dados = {};
+            for (const [k, v] of fd.entries()) dados[k] = v;
+
+            const btn = e.target.querySelector('button[type=submit]');
+            btn.disabled = true;
+            const original = btn.innerText;
+            btn.innerText = 'Salvando…';
+
+            const action = itemEditandoId
+                ? (tipoAtual === 'devocionais' ? 'updateDevocional' : tipoAtual === 'livros' ? 'updateLivro' : 'updateMidia')
+                : (tipoAtual === 'devocionais' ? 'addDevocional' : tipoAtual === 'livros' ? 'addLivro' : 'addMidia');
+            if (itemEditandoId) dados.id = itemEditandoId;
+
+            try {
+                const r = await chamarAPI(action, dados);
+                if (r.success) {
+                    showNotification('Sucesso', 'Conteúdo salvo com sucesso!', 'success');
+                    fecharForm();
+                    recarregarAbaAtual();
+                } else {
+                    showNotification('Erro', r.error || 'Não foi possível salvar.', 'error');
+                }
+            } catch (err) {
+                showNotification('Erro de conexão', 'Não foi possível falar com o backend.', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = original;
+            }
+        });
+    </script>
+</body>
+</html>
