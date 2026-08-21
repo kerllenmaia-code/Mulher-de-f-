@@ -8,16 +8,22 @@
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        // As cores apontam para variáveis CSS (definidas logo abaixo, em
+        // :root) em vez de valores fixos. Isso permite trocar o tema depois
+        // que a página já carregou (ex.: conforme a Configuração salva na
+        // planilha) só mudando a variável CSS — sem precisar recompilar o
+        // Tailwind. cafe/offwhite (texto/fundo) ficam sempre fixos em todos
+        // os temas para garantir contraste e legibilidade.
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        oliva: '#5C6F52',
-                        'oliva-dark': '#485741',
-                        salvia: '#A3B19B',
-                        cafe: '#3A3930',
-                        offwhite: '#F8F5EF',
-                        dourado: '#C5A880'
+                        oliva: 'var(--cor-oliva)',
+                        'oliva-dark': 'var(--cor-oliva-dark)',
+                        salvia: 'var(--cor-salvia)',
+                        cafe: 'var(--cor-cafe)',
+                        offwhite: 'var(--cor-offwhite)',
+                        dourado: 'var(--cor-dourado)'
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
@@ -27,6 +33,18 @@
             }
         }
     </script>
+    <style>
+        /* Tema padrão (visual original do site) — sobrescrito em runtime por
+           aplicarTema() se a planilha tiver um tema de campanha configurado. */
+        :root {
+            --cor-oliva: #5C6F52;
+            --cor-oliva-dark: #485741;
+            --cor-salvia: #A3B19B;
+            --cor-cafe: #3A3930;
+            --cor-offwhite: #F8F5EF;
+            --cor-dourado: #C5A880;
+        }
+    </style>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,11 +60,16 @@
         <span id="topo-aviso">Novo Devocional Gratuito de Mês Disponível: "Renovadas na Palavra"</span>
     </div>
 
+    <!-- Faixa de Campanha (só aparece se houver mensagem de campanha configurada) -->
+    <div id="campanha-ribbon" class="hidden bg-dourado text-cafe text-xs sm:text-sm py-2.5 px-4 text-center font-semibold relative z-50">
+        <i class="fa-solid fa-ribbon mr-2"></i><span id="campanha-texto"></span>
+    </div>
+
     <!-- Navigation Header -->
     <header class="sticky top-0 z-40 bg-offwhite/90 backdrop-blur-md border-b border-salvia/30 transition-all">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-oliva text-offwhite flex items-center justify-center font-serif font-bold text-xl shadow-sm">
+                <div id="logo-mark" class="w-10 h-10 rounded-full bg-oliva text-offwhite flex items-center justify-center font-serif font-bold text-xl shadow-sm overflow-hidden shrink-0">
                     M
                 </div>
                 <span class="font-serif font-bold text-xl sm:text-2xl tracking-tight text-cafe">Mulher de Fé</span>
@@ -61,7 +84,7 @@
             </nav>
 
             <div class="hidden md:flex items-center gap-4">
-                <button onclick="abrirModalDevocional()" class="bg-oliva hover:bg-oliva-dark text-offwhite px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm hover:shadow flex items-center gap-2">
+                <button onclick="abrirModalDevocionalDestaque()" class="bg-oliva hover:bg-oliva-dark text-offwhite px-5 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm hover:shadow flex items-center gap-2">
                     <i class="fa-solid fa-download text-xs"></i> Baixar Devocional
                 </button>
             </div>
@@ -78,7 +101,7 @@
             <a href="#livros" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Livros</a>
             <a href="#midias" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Mensagens</a>
             <a href="#sobre" onclick="toggleMobileMenu()" class="block py-2 text-cafe font-medium">Sobre</a>
-            <button onclick="abrirModalDevocional(); toggleMobileMenu();" class="w-full bg-oliva text-offwhite py-3 rounded-lg text-sm font-medium mt-2 flex items-center justify-center gap-2">
+            <button onclick="abrirModalDevocionalDestaque(); toggleMobileMenu();" class="w-full bg-oliva text-offwhite py-3 rounded-lg text-sm font-medium mt-2 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-download"></i> Baixar Devocional
             </button>
         </div>
@@ -99,7 +122,7 @@
                     Um refúgio acolhedor para mulheres que buscam nutrir a alma através da Palavra, reflexões profundas e comunhão genuína.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-2">
-                    <button onclick="abrirModalDevocional()" class="bg-oliva hover:bg-oliva-dark text-offwhite px-8 py-3.5 rounded-full font-medium shadow-md transition-all flex items-center justify-center gap-2">
+                    <button onclick="abrirModalDevocionalDestaque()" class="bg-oliva hover:bg-oliva-dark text-offwhite px-8 py-3.5 rounded-full font-medium shadow-md transition-all flex items-center justify-center gap-2">
                         <i class="fa-solid fa-download"></i> Baixar Devocional Gratuito
                     </button>
                     <a href="#devocionais" class="border border-oliva/40 hover:border-oliva text-cafe px-8 py-3.5 rounded-full font-medium transition-all flex items-center justify-center gap-2">
@@ -227,8 +250,8 @@
             </div>
             <!-- Modal Body -->
             <div class="p-6 space-y-4">
-                <p class="text-xs sm:text-sm text-cafe text-center mb-4">
-                    Informe seus dados abaixo para receber o PDF diretamente no seu e-mail ou fazer o download agora mesmo.
+                <p id="modal-devocional-desc" class="text-xs sm:text-sm text-cafe text-center mb-4">
+                    Informe seus dados abaixo. Ao confirmar, o download do PDF abre em outra aba.
                 </p>
                 <form onsubmit="handleDownload(event)" class="space-y-4">
                     <div>
@@ -277,6 +300,11 @@
                 .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
+        function ehGratuito(preco) {
+            const p = (preco || '').trim().toLowerCase();
+            return p === '' || p.includes('grat') || p === 'free' || p === 'r$ 0' || p === 'r$0';
+        }
+
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
             const icon = document.getElementById('mobile-menu-icon');
@@ -319,15 +347,106 @@
             }, 4000);
         }
 
-        // Qual devocional está sendo baixado no momento (definido ao abrir o
-        // modal a partir de um card específico; o botão genérico do topo usa
-        // o devocional em destaque, sem link de PDF específico).
-        let devocionalSelecionado = { titulo: 'Devocional Gratuito', linkPdf: '' };
+        // =========================================================================
+        // Acesso a conteúdo (Devocionais/Livros) com identificação simples
+        // =========================================================================
+        // Regra pedida pela Kerllen: o arquivo abre NA HORA (modo visualização
+        // do Google Drive — o próprio Drive tem o botão de download; não
+        // forçamos download nem prometemos e-mail). Antes do primeiro acesso,
+        // a pessoa se identifica (nome + e-mail); depois disso, o navegador
+        // "lembra" (localStorage) e os próximos cliques abrem direto, sem
+        // pedir de novo. Cada acesso é registrado na planilha (reaproveitando
+        // a coluna Nome_Devocional_Baixado da aba Leads_Devocionais para
+        // guardar o título do que foi aberto — devocional OU livro — para não
+        // precisar mexer no backend original da Kerllen nem em suas abas).
 
-        function abrirModalDevocional(titulo, linkPdf) {
-            devocionalSelecionado = { titulo: titulo || 'Devocional Gratuito', linkPdf: linkPdf || '' };
-            document.getElementById('modal-devocional-titulo').innerText = 'Baixar: ' + devocionalSelecionado.titulo;
+        const LS_IDENTIFICACAO = 'mdf_identificacao';
+
+        function obterIdentificacao() {
+            try {
+                const bruto = localStorage.getItem(LS_IDENTIFICACAO);
+                return bruto ? JSON.parse(bruto) : null;
+            } catch (err) {
+                return null; // localStorage bloqueado (ex.: aba anônima) — trata como não identificada
+            }
+        }
+
+        function salvarIdentificacao(nome, email) {
+            try {
+                localStorage.setItem(LS_IDENTIFICACAO, JSON.stringify({ nome, email }));
+            } catch (err) { /* segue sem lembrar — não é crítico */ }
+        }
+
+        function abrirEmNovaAba(url) {
+            // Um <a> clicado de verdade é mais confiável que window.open()
+            // depois de um await (que navegadores podem bloquear).
+            const a = document.createElement('a');
+            a.href = url;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        function registrarAcesso(nome, email, titulo) {
+            // "Fire and forget": não trava a abertura do arquivo esperando a
+            // rede — só guarda o rastro na planilha em segundo plano.
+            fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'salvarLeadDevocional', nome, email, nome_devocional: titulo }),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            }).catch(err => console.error('Não foi possível registrar o acesso:', err));
+        }
+
+        // Primeiro devocional publicado — usado pelos botões genéricos "Baixar
+        // Devocional" do topo/herói quando não vêm de um card específico.
+        let devocionalDestaque = null;
+
+        // Item aguardando identificação (preenchido ao abrir o modal; lido no
+        // envio do formulário).
+        let acessoPendente = null;
+
+        /**
+         * Ponto de entrada único para abrir um devocional ou livro.
+         * @param {string} titulo
+         * @param {string} link - link do arquivo (Drive ou outro)
+         * @param {boolean} permitirSemArquivo - true só para o CTA genérico
+         *   "Baixar Devocional" quando ainda não existe nenhum publicado
+         *   (captura o interesse da pessoa mesmo sem ter o que abrir).
+         */
+        function acessarConteudo(titulo, link, permitirSemArquivo) {
+            if (!link && !permitirSemArquivo) {
+                showNotification('Em Breve', 'Este conteúdo ainda não tem arquivo cadastrado.', 'info');
+                return;
+            }
+
+            const identificacao = obterIdentificacao();
+
+            if (identificacao && link) {
+                abrirEmNovaAba(link);
+                registrarAcesso(identificacao.nome, identificacao.email, titulo);
+                return;
+            }
+            if (identificacao && !link) {
+                showNotification('Você já está cadastrada', 'Assim que sair um devocional novo, é só voltar aqui.', 'info');
+                return;
+            }
+
+            acessoPendente = { titulo, link };
+            document.getElementById('modal-devocional-titulo').innerText = link ? ('Acessar: ' + titulo) : 'Fique por dentro';
+            document.getElementById('modal-devocional-desc').innerText = link
+                ? 'Informe seus dados para abrir o arquivo (Google Drive) — de lá é só clicar em baixar. Da próxima vez, não pedimos de novo neste navegador.'
+                : 'Informe seus dados para a gente te avisar assim que sair um devocional novo.';
             openModal('devocional-modal');
+        }
+
+        function abrirModalDevocionalDestaque() {
+            if (devocionalDestaque) {
+                acessarConteudo(devocionalDestaque.Titulo, devocionalDestaque.Link_PDF);
+            } else {
+                acessarConteudo('Interesse em Devocionais', '', true);
+            }
         }
 
         async function handleDownload(e) {
@@ -337,6 +456,13 @@
             const email = document.getElementById('lead-email').value;
             const btn = document.getElementById('btn-download');
             const originalContent = btn.innerHTML;
+            const pendente = acessoPendente || { titulo: 'Interesse Geral', link: '' };
+
+            // Abre o arquivo JÁ (clique síncrono, dentro do gesto de envio do
+            // formulário) — não espera a resposta da rede.
+            if (pendente.link) {
+                abrirEmNovaAba(pendente.link);
+            }
 
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
             btn.disabled = true;
@@ -345,7 +471,7 @@
                 action: "salvarLeadDevocional",
                 nome: nome,
                 email: email,
-                nome_devocional: devocionalSelecionado.titulo
+                nome_devocional: pendente.titulo
             };
 
             try {
@@ -358,12 +484,14 @@
                 const result = await response.json();
 
                 if (result.status === "success") {
+                    salvarIdentificacao(nome, email);
                     closeModal('devocional-modal');
-                    showNotification('Sucesso!', 'Cadastro realizado com sucesso! O download foi iniciado.', 'success');
+                    showNotification(
+                        'Sucesso!',
+                        pendente.link ? 'Cadastro salvo! O arquivo abriu em outra aba.' : 'Cadastro realizado com sucesso!',
+                        'success'
+                    );
                     e.target.reset();
-                    if (devocionalSelecionado.linkPdf) {
-                        window.open(devocionalSelecionado.linkPdf, '_blank');
-                    }
                 } else {
                     showNotification('Ops!', 'Houve um erro no servidor. Tente novamente.', 'error');
                 }
@@ -373,6 +501,7 @@
             } finally {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
+                acessoPendente = null;
             }
         }
 
@@ -444,11 +573,75 @@
             return `<i class="fa-solid ${icone} ${classesIcone}"></i>`;
         }
 
+        // =========================================================================
+        // Temas visuais (Aparência) — presets de campanha + tema personalizado.
+        // Mesma lista de presets existe no admin.html (seletor visual do painel).
+        // =========================================================================
+        const TEMAS_PREDEFINIDOS = {
+            padrao: { nome: 'Padrão (Mulher de Fé)', oliva: '#5C6F52', olivaDark: '#485741', salvia: '#A3B19B', dourado: '#C5A880' },
+            'agosto-lilas': { nome: 'Agosto Lilás', oliva: '#7C4FA6', olivaDark: '#5E3A80', salvia: '#D9C7EC', dourado: '#B98CD9' },
+            'setembro-amarelo': { nome: 'Setembro Amarelo', oliva: '#C9971C', olivaDark: '#9C7412', salvia: '#F5E1A4', dourado: '#E0A93A' },
+            'outubro-rosa': { nome: 'Outubro Rosa', oliva: '#C2427A', olivaDark: '#9A3161', salvia: '#F3C6DA', dourado: '#E0779E' },
+            'novembro-azul': { nome: 'Novembro Azul', oliva: '#2E6DA4', olivaDark: '#21507B', salvia: '#BBD9EF', dourado: '#5FA0D6' },
+        };
+
+        function hexParaRgb(hex) {
+            hex = (hex || '').replace('#', '');
+            if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+            const num = parseInt(hex, 16) || 0;
+            return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
+        }
+        function rgbParaHex(r, g, b) {
+            return '#' + [r, g, b].map(v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
+        }
+        function misturarCor(hex, alvo, quantidade) {
+            const a = hexParaRgb(hex), b = hexParaRgb(alvo);
+            return rgbParaHex(a.r + (b.r - a.r) * quantidade, a.g + (b.g - a.g) * quantidade, a.b + (b.b - a.b) * quantidade);
+        }
+        function escurecerCor(hex, q) { return misturarCor(hex, '#000000', q); }
+        function clarearCor(hex, q) { return misturarCor(hex, '#ffffff', q); }
+
+        /**
+         * Aplica o tema via variáveis CSS (ver :root no <head>). cafe/offwhite
+         * (texto/fundo) nunca mudam — garante contraste e legibilidade em
+         * qualquer tema/campanha.
+         */
+        function aplicarTema(cfg) {
+            let paleta;
+            if (cfg.tema_id === 'personalizado' && cfg.tema_cor_primaria) {
+                const oliva = cfg.tema_cor_primaria;
+                paleta = {
+                    oliva,
+                    olivaDark: escurecerCor(oliva, 0.22),
+                    salvia: clarearCor(oliva, 0.55),
+                    dourado: cfg.tema_cor_destaque || oliva,
+                };
+            } else {
+                paleta = TEMAS_PREDEFINIDOS[cfg.tema_id] || TEMAS_PREDEFINIDOS.padrao;
+            }
+            const raiz = document.documentElement.style;
+            raiz.setProperty('--cor-oliva', paleta.oliva);
+            raiz.setProperty('--cor-oliva-dark', paleta.olivaDark);
+            raiz.setProperty('--cor-salvia', paleta.salvia);
+            raiz.setProperty('--cor-dourado', paleta.dourado);
+        }
+
         async function carregarConfiguracoesPublicas() {
             try {
                 const r = await buscarPainel('getConfiguracoesPublicas');
                 if (!r.success) return;
                 const cfg = r.data || {};
+
+                aplicarTema(cfg);
+
+                if (cfg.logo_url) {
+                    document.getElementById('logo-mark').innerHTML = `<img src="${esc(cfg.logo_url)}" alt="Logotipo" class="w-full h-full object-cover">`;
+                }
+                if (cfg.campanha_mensagem) {
+                    document.getElementById('campanha-texto').innerText = cfg.campanha_mensagem;
+                    document.getElementById('campanha-ribbon').classList.remove('hidden');
+                }
+
                 if (cfg.aviso_topo_texto) document.getElementById('topo-aviso').innerText = cfg.aviso_topo_texto;
                 if (cfg.versiculo_diario_texto) {
                     // Não força aspas extras: quem preenche o campo no painel
@@ -474,8 +667,10 @@
                 const r = await buscarPainel('getDevocionaisPublicados');
                 if (!r.success || !r.data || r.data.length === 0) {
                     grid.innerHTML = '<p class="md:col-span-3 text-center text-sm text-cafe/50">Novos devocionais em breve.</p>';
+                    devocionalDestaque = null;
                     return;
                 }
+                devocionalDestaque = r.data[0];
                 grid.innerHTML = r.data.map(d => `
                     <div class="bg-offwhite rounded-xl overflow-hidden border border-salvia/30 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
                         <div>
@@ -491,8 +686,8 @@
                             </div>
                         </div>
                         <div class="p-6 pt-0">
-                            <button onclick="abrirModalDevocional('${esc(d.Titulo).replace(/'/g, "\\'")}', '${esc(d.Link_PDF || '').replace(/'/g, "\\'")}')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
-                                Baixar PDF Completo
+                            <button onclick="acessarConteudo('${esc(d.Titulo).replace(/'/g, "\\'")}', '${esc(d.Link_PDF || '').replace(/'/g, "\\'")}')" class="w-full bg-salvia/30 hover:bg-oliva hover:text-offwhite text-cafe py-2.5 rounded-lg text-sm font-semibold transition-all">
+                                Acessar Devocional
                             </button>
                         </div>
                     </div>`).join('');
@@ -521,7 +716,9 @@
                             ${l.Preco ? `<p class="text-sm font-semibold text-oliva">${esc(l.Preco)}</p>` : ''}
                             <div class="pt-2 flex flex-wrap gap-2 justify-center sm:justify-start">
                                 ${l.Link_Pagamento
-                                    ? `<a href="${esc(l.Link_Pagamento)}" target="_blank" rel="noopener" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm inline-block">Adquirir Livro</a>`
+                                    ? (ehGratuito(l.Preco)
+                                        ? `<button onclick="acessarConteudo('${esc(l.Titulo).replace(/'/g, "\\'")}', '${esc(l.Link_Pagamento).replace(/'/g, "\\'")}')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm">Baixar Livro</button>`
+                                        : `<a href="${esc(l.Link_Pagamento)}" target="_blank" rel="noopener" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm inline-block">Adquirir Livro</a>`)
                                     : `<button onclick="buyBookModal('${esc(l.Titulo).replace(/'/g, "\\'")}')" class="bg-oliva hover:bg-oliva-dark text-offwhite px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-sm">Tenho Interesse</button>`}
                                 ${l.Link_Amostra ? `<a href="${esc(l.Link_Amostra)}" target="_blank" rel="noopener" class="border border-oliva/40 text-cafe px-6 py-2.5 rounded-full text-sm font-medium inline-block">Ver Amostra</a>` : ''}
                             </div>
