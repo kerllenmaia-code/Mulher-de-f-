@@ -80,4 +80,17 @@ Foi preciso guardar a URL de uma imagem para cada Devocional/Livro/Mídia, mas a
 
 ---
 
+### 7. Teste de ponta a ponta do painel (depois da autorização do Luciano)
+
+Depois que o Luciano autorizou o novo backend (passo manual único, obrigatório em todo Apps Script recém-publicado), foi feito o teste completo pela interface real do painel publicado: login com a senha provisória → troca obrigatória → cadastro de um Devocional, um Livro e uma Mídia (cada um com link e imagem) → conferido na planilha → conferido no site público (imagem carregando, link funcionando, vídeo do YouTube incorporado de verdade) → edição das Configurações do Site (banner, aviso) → conferida no site → tudo removido/restaurado ao final.
+
+**O que apareceu no caminho:**
+
+- **Erro de conexão passageiro:** ao salvar a Mídia de teste, a primeira tentativa deu "Erro de conexão" (instabilidade momentânea entre o navegador e o Google, não um bug do código). O formulário manteve os dados preenchidos e a segunda tentativa (clicar em "Salvar" de novo) funcionou. **Lição:** um erro de conexão isolado nem sempre é bug — vale tentar de novo antes de investigar o código; o importante é que o formulário não perdeu o que a pessoa tinha digitado.
+- **Aspas duplicadas no Versículo do Dia:** o texto salvo na planilha já vinha com aspas (`"A mulher que teme..."`), e o `index.html` colocava outro par de aspas por cima, mostrando `""texto""`. **Corrigido** checando se o texto já começa e termina com aspas antes de adicionar. **Lição:** ao formatar visualmente um texto que vem de uma fonte de dados (planilha), sempre checar como esse texto já está formatado — evita "dobrar" pontuação.
+
+**Estado final da senha do painel:** foi restaurada para a **senha provisória `MulherDeFe2026`** com a troca obrigatória ainda pendente — ou seja, o painel está exatamente como a Kerllen vai encontrar da primeira vez que abrir, como se este teste nunca tivesse acontecido. (Isso só foi possível apagando, ao final, uma ação especial de "restaurar senha" que foi adicionada só para o teste e removida do código logo depois — nunca ficou publicada por mais tempo que o necessário.)
+
+---
+
 *Documento criado como parte do processo padrão de entrega dos projetos da Turma 2 IA na Prática. Serve como material de estudo — não é preciso entender de programação para ler; cada item explica o problema com uma comparação do dia a dia.*
