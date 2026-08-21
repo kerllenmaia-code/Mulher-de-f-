@@ -450,7 +450,13 @@
                 if (!r.success) return;
                 const cfg = r.data || {};
                 if (cfg.aviso_topo_texto) document.getElementById('topo-aviso').innerText = cfg.aviso_topo_texto;
-                if (cfg.versiculo_diario_texto) document.getElementById('versiculo-texto').innerText = '"' + cfg.versiculo_diario_texto + '"';
+                if (cfg.versiculo_diario_texto) {
+                    // Não força aspas extras: quem preenche o campo no painel
+                    // já pode digitar com aspas (como está o texto padrão) ou sem.
+                    const texto = cfg.versiculo_diario_texto.trim();
+                    const jaTemAspas = texto.startsWith('"') && texto.endsWith('"');
+                    document.getElementById('versiculo-texto').innerText = jaTemAspas ? texto : '"' + texto + '"';
+                }
                 if (cfg.versiculo_diario_ref) document.getElementById('versiculo-ref').innerText = cfg.versiculo_diario_ref;
                 if (cfg.imagem_hero_url) {
                     const hero = document.getElementById('hero-section');
